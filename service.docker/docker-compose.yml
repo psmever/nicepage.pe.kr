@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  nicepage-service:
+    build:
+     context: '.'
+    environment:
+        TZ: "Asia/Seoul"
+    container_name: nicepage-service
+    hostname: nicepage-service
+    domainname: localdomain
+    ports:
+      - "8080:80"
+      - "8443:443"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../service:/var/www:rw
+      - ./data:/tmp/data
+    command:
+        - /usr/local/bin/start.sh
+    networks:
+        - nicepage-networks
+
+networks:
+    nicepage-networks:
+        driver: bridge
