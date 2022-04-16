@@ -12,8 +12,8 @@ EXPOSE 80
 EXPOSE 43380
 EXPOSE 9000
 
-ADD ./entrypoint.sh /usr/local/bin/entrypoint.sh
-ADD ./start.sh /usr/local/bin/start.sh
+ADD ./files/entrypoint.sh /usr/local/bin/entrypoint.sh
+ADD ./files/start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
 RUN apt-get update
@@ -63,4 +63,4 @@ RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 
 RUN chown www-data:www-data /var/www
-ADD ./nginx_default /etc/nginx/sites-available/default
+ADD ./files/nginx_default /etc/nginx/sites-available/default
