@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+
+Route::group(['as' => 'api.'], function () {
+    /**
+     * Api Test 용 컨트롤러.
+     */
+    Route::group(['prefix' => 'test', 'as' => 'test.'], function () {
+        Route::post('default', [\App\Http\Controllers\Api\TestController::class, 'default'])->name('default');
+    });
 });

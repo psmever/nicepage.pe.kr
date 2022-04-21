@@ -40,6 +40,15 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        /**
+         * Custom Setting
+         */
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+            'hash' => false,
+        ],
     ],
 
     /*
