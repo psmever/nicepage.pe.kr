@@ -10,5 +10,21 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-/.idea
-/.vscode
+
+# local file
+storage/*.key
+
+# Editor
+.vscode
+.DS_Store
+.idea
+
+# Laravel Testing
+.env.testing
+
+# deploy
+deploy.sh
+
+# test controller
+app/Http/Controllers/Api/TestController.php
+app/Http/Controllers/Web/TestController.php
