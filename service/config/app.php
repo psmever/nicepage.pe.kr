@@ -182,7 +182,7 @@ return [
          */
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
-
+        App\Providers\ResponseMacroServiceProvider::class,
     ],
 
     /*

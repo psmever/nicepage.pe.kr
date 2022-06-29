@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 9.8.1.
+ * Generated for Laravel 9.11.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -1936,7 +1936,7 @@
          *
          * @param array $credentials
          * @param array|callable $callbacks
-         * @param false $remember
+         * @param bool $remember
          * @return bool 
          * @static 
          */ 
@@ -4753,7 +4753,7 @@
                     /**
          * Get all of the support drivers.
          *
-         * @return array 
+         * @return string[] 
          * @static 
          */ 
         public static function supportedDrivers()
@@ -4764,7 +4764,7 @@
                     /**
          * Get all of the drivers that are actually available.
          *
-         * @return array 
+         * @return string[] 
          * @static 
          */ 
         public static function availableDrivers()
@@ -4800,7 +4800,7 @@
                     /**
          * Return all of the created connections.
          *
-         * @return array 
+         * @return \Illuminate\Database\array<string, \Illuminate\Database\Connection>
          * @static 
          */ 
         public static function getConnections()
@@ -5844,7 +5844,7 @@
          * Register an event and payload to be fired later.
          *
          * @param string $event
-         * @param array $payload
+         * @param object|array $payload
          * @return void 
          * @static 
          */ 
@@ -6795,7 +6795,7 @@
          * Define a new ability.
          *
          * @param string $ability
-         * @param callable|string $callback
+         * @param callable|array|string $callback
          * @return \Illuminate\Auth\Access\Gate 
          * @throws \InvalidArgumentException
          * @static 
@@ -7235,6 +7235,7 @@
      * @method static \Illuminate\Http\Client\PendingRequest baseUrl(string $url)
      * @method static \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
      * @method static \Illuminate\Http\Client\PendingRequest bodyFormat(string $format)
+     * @method static \Illuminate\Http\Client\PendingRequest connectTimeout(int $seconds)
      * @method static \Illuminate\Http\Client\PendingRequest contentType(string $contentType)
      * @method static \Illuminate\Http\Client\PendingRequest dd()
      * @method static \Illuminate\Http\Client\PendingRequest dump()
@@ -7253,6 +7254,7 @@
      * @method static \Illuminate\Http\Client\PendingRequest withUserAgent(string $userAgent)
      * @method static \Illuminate\Http\Client\PendingRequest withoutRedirecting()
      * @method static \Illuminate\Http\Client\PendingRequest withoutVerifying()
+     * @method static \Illuminate\Http\Client\PendingRequest throw(callable $callback = null)
      * @method static array pool(callable $callback)
      * @method static \Illuminate\Http\Client\Response delete(string $url, array $data = [])
      * @method static \Illuminate\Http\Client\Response get(string $url, array|string|null $query = null)
@@ -11525,6 +11527,32 @@
                         return $instance->input($key, $default);
         }
                     /**
+         * Retrieve input from the request as a Stringable instance.
+         *
+         * @param string $key
+         * @param mixed $default
+         * @return \Illuminate\Support\Stringable 
+         * @static 
+         */ 
+        public static function str($key, $default = null)
+        {
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->str($key, $default);
+        }
+                    /**
+         * Retrieve input from the request as a Stringable instance.
+         *
+         * @param string $key
+         * @param mixed $default
+         * @return \Illuminate\Support\Stringable 
+         * @static 
+         */ 
+        public static function string($key, $default = null)
+        {
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->string($key, $default);
+        }
+                    /**
          * Retrieve input as a boolean value.
          * 
          * Returns true when value is "1", "true", "on", and "yes". Otherwise, returns false.
@@ -12062,6 +12090,86 @@
         public static function flushMacros()
         {
                         \Illuminate\Routing\ResponseFactory::flushMacros();
+        }
+                    /**
+         * 기본 성공 Render Macro.
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @param mixed $result
+         * @static 
+         */ 
+        public static function success($result = null)
+        {
+                        return \Illuminate\Routing\ResponseFactory::success($result);
+        }
+                    /**
+         * 
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @param mixed $message
+         * @param mixed $result
+         * @static 
+         */ 
+        public static function message_success($message = '', $result = null)
+        {
+                        return \Illuminate\Routing\ResponseFactory::message_success($message, $result);
+        }
+                    /**
+         * 결과 커스텀 하게 사용.
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @param mixed $statusCode
+         * @param mixed $message
+         * @param mixed $result
+         * @static 
+         */ 
+        public static function custom_success($statusCode = 200, $message = '', $result = null)
+        {
+                        return \Illuminate\Routing\ResponseFactory::custom_success($statusCode, $message, $result);
+        }
+                    /**
+         * 생성 메시지만 처리.
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @param int $statusCode
+         * @static 
+         */ 
+        public static function success_only_message($statusCode = 201)
+        {
+                        return \Illuminate\Routing\ResponseFactory::success_only_message($statusCode);
+        }
+                    /**
+         * 데이터만 Render Macro.
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @param mixed $response
+         * @static 
+         */ 
+        public static function success_only_data($response = null)
+        {
+                        return \Illuminate\Routing\ResponseFactory::success_only_data($response);
+        }
+                    /**
+         * 성공 No Contents Render Macro
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @static 
+         */ 
+        public static function success_no_content()
+        {
+                        return \Illuminate\Routing\ResponseFactory::success_no_content();
+        }
+                    /**
+         * 기본 Error Render Macro.
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @param mixed $statusCode
+         * @param mixed $error_message
+         * @static 
+         */ 
+        public static function error($statusCode = 401, $error_message = null)
+        {
+                        return \Illuminate\Routing\ResponseFactory::error($statusCode, $error_message);
         }
          
     }
@@ -16791,6 +16899,97 @@
      
 }
 
+    namespace Illuminate\Routing { 
+            /**
+     * 
+     *
+     */ 
+        class ResponseFactory {
+                    /**
+         * 기본 성공 Render Macro.
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @param mixed $result
+         * @static 
+         */ 
+        public static function success($result = null)
+        {
+                        return \Illuminate\Routing\ResponseFactory::success($result);
+        }
+                    /**
+         * 
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @param mixed $message
+         * @param mixed $result
+         * @static 
+         */ 
+        public static function message_success($message = '', $result = null)
+        {
+                        return \Illuminate\Routing\ResponseFactory::message_success($message, $result);
+        }
+                    /**
+         * 결과 커스텀 하게 사용.
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @param mixed $statusCode
+         * @param mixed $message
+         * @param mixed $result
+         * @static 
+         */ 
+        public static function custom_success($statusCode = 200, $message = '', $result = null)
+        {
+                        return \Illuminate\Routing\ResponseFactory::custom_success($statusCode, $message, $result);
+        }
+                    /**
+         * 생성 메시지만 처리.
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @param int $statusCode
+         * @static 
+         */ 
+        public static function success_only_message($statusCode = 201)
+        {
+                        return \Illuminate\Routing\ResponseFactory::success_only_message($statusCode);
+        }
+                    /**
+         * 데이터만 Render Macro.
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @param mixed $response
+         * @static 
+         */ 
+        public static function success_only_data($response = null)
+        {
+                        return \Illuminate\Routing\ResponseFactory::success_only_data($response);
+        }
+                    /**
+         * 성공 No Contents Render Macro
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @static 
+         */ 
+        public static function success_no_content()
+        {
+                        return \Illuminate\Routing\ResponseFactory::success_no_content();
+        }
+                    /**
+         * 기본 Error Render Macro.
+         *
+         * @see \App\Providers\ResponseMacroServiceProvider::boot()
+         * @param mixed $statusCode
+         * @param mixed $error_message
+         * @static 
+         */ 
+        public static function error($statusCode = 401, $error_message = null)
+        {
+                        return \Illuminate\Routing\ResponseFactory::error($statusCode, $error_message);
+        }
+         
+    }
+     
+}
+
 
 namespace  { 
             class App extends \Illuminate\Support\Facades\App {}
@@ -17084,6 +17283,21 @@ namespace  {
             {
                                 /** @var \Illuminate\Database\Eloquent\Builder $instance */
                                 return $instance->findOrNew($id, $columns);
+            }
+             
+                /**
+             * Find a model by its primary key or call a callback.
+             *
+             * @param mixed $id
+             * @param \Closure|array $columns
+             * @param \Closure|null $callback
+             * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|static[]|static|mixed 
+             * @static 
+             */ 
+            public static function findOr($id, $columns = [], $callback = null)
+            {
+                                /** @var \Illuminate\Database\Eloquent\Builder $instance */
+                                return $instance->findOr($id, $columns, $callback);
             }
              
                 /**
@@ -17518,6 +17732,18 @@ namespace  {
             {
                                 /** @var \Illuminate\Database\Eloquent\Builder $instance */
                                 return $instance->setEagerLoads($eagerLoad);
+            }
+             
+                /**
+             * Flush the relationships being eagerly loaded.
+             *
+             * @return \Illuminate\Database\Eloquent\Builder|static 
+             * @static 
+             */ 
+            public static function withoutEagerLoads()
+            {
+                                /** @var \Illuminate\Database\Eloquent\Builder $instance */
+                                return $instance->withoutEagerLoads();
             }
              
                 /**
