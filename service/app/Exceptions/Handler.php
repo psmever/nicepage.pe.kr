@@ -83,7 +83,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (ServiceErrorException $e) use ($slackLogging) {
 
             $this->loggingChannel = 'ServiceErrorException';
-            $error_message = $e->getMessage() ?: __('exception.error_exception');
+            $error_message = $e->getMessage() ?: __('default.exception.error_exception');
             $loggerMessage = $this->getLoggerMessage($error_message);
 
             Log::channel('ServiceErrorExceptionLog')->error($loggerMessage['file']);
@@ -101,7 +101,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (NotFoundHttpException $e) {
 
             $this->loggingChannel = 'NotFoundHttpException';
-            $error_message = $e->getMessage() ?: __('exception.NotFoundHttpException');
+            $error_message = $e->getMessage() ?: __('default.exception.NotFoundHttpException');
             $loggerMessage = $this->getLoggerMessage($error_message);
 
             Log::channel('NotFoundHttpException')->error($loggerMessage['file']);
@@ -117,7 +117,7 @@ class Handler extends ExceptionHandler
             if ( !$e ) return false;
 
             $this->loggingChannel = 'MethodNotAllowedHttpException';
-            $error_message = __('exception.MethodNotAllowedHttpException');
+            $error_message = __('default.exception.MethodNotAllowedHttpException');
             $loggerMessage = $this->getLoggerMessage($error_message);
 
             Log::channel('MethodNotAllowedHttpException')->error($loggerMessage['file']);
@@ -131,7 +131,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (ClientErrorException $e) use ($slackLogging) {
 
             $this->loggingChannel = 'ClientErrorException';
-            $error_message = $e->getMessage() ?: __('exception.ClientErrorException');
+            $error_message = $e->getMessage() ?: __('default.exception.ClientErrorException');
             $loggerMessage = $this->getLoggerMessage($error_message);
 
             Log::channel('ClientErrorException')->error($loggerMessage['file']);
@@ -149,7 +149,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (ServerErrorException $e) use ($slackLogging) {
 
             $this->loggingChannel = 'ServerErrorException';
-            $error_message = $e->getMessage() ?: __('exception.ServerErrorException');
+            $error_message = $e->getMessage() ?: __('default.exception.ServerErrorException');
             $loggerMessage = $this->getLoggerMessage($error_message);
 
             Log::channel('ServerErrorException')->error($loggerMessage['file']);
@@ -168,7 +168,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (ForbiddenErrorException $e) {
 
             $this->loggingChannel = 'ForbiddenErrorException';
-            $error_message = ($e->getMessage()) ?: __('exception.ForbiddenErrorException');
+            $error_message = ($e->getMessage()) ?: __('default.exception.ForbiddenErrorException');
             $loggerMessage = $this->getLoggerMessage($error_message);
 
             Log::channel('ForbiddenErrorException')->error($loggerMessage['file']);
@@ -182,7 +182,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (AuthenticationException $e) use ($slackLogging) {
 
             $this->loggingChannel = 'AuthenticationException';
-            $error_message = $e->getMessage() == "Unauthenticated." ? __('exception.AuthenticationException'): $e->getMessage();
+            $error_message = $e->getMessage() == "Unauthenticated." ? __('default.exception.AuthenticationException'): $e->getMessage();
             $loggerMessage = $this->getLoggerMessage($error_message);
 
             Log::channel('AuthenticationException')->error($loggerMessage['file']);
@@ -201,7 +201,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (ThrottleRequestsException $e) use ($slackLogging) {
 
             $this->loggingChannel = 'ThrottleRequestsException';
-            $error_message = ($e->getMessage()) ?: __('exception.ThrottleRequestsException');
+            $error_message = ($e->getMessage()) ?: __('default.exception.ThrottleRequestsException');
             $loggerMessage = $this->getLoggerMessage($error_message);
 
             Log::channel('ThrottleRequestsException')->error($loggerMessage['file']);
@@ -219,7 +219,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (PDOException $e) use ($slackLogging) {
 
             $this->loggingChannel = 'PDOException';
-            $error_message = ($e->getMessage()) ?: __('exception.PDOException');
+            $error_message = ($e->getMessage()) ?: __('default.exception.PDOException');
             $loggerMessage = $this->getLoggerMessage($error_message);
 
             Log::channel('PDOException')->error($loggerMessage['file']);
@@ -268,7 +268,7 @@ EOF;
             return Response::error(
                 500,
                 [
-                    'message' => __('exception.error_exception'),
+                    'message' => __('default.exception.error_exception'),
                     'error' => $e->getMessage()
                 ]
             );
@@ -290,7 +290,7 @@ EOF;
          * laravel 이전 버전에서 가지고 옴.
          */
         if ($e instanceof ModelNotFoundException) {
-            $error_message = __('exception.ModelNotFoundException');
+            $error_message = __('default.exception.ModelNotFoundException');
             if($request->wantsJson()) {
                 return Response::error(404, $error_message);
             }
