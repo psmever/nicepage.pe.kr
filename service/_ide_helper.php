@@ -12297,62 +12297,17 @@
                         \Illuminate\Routing\ResponseFactory::flushMacros();
         }
                     /**
-         * 기본 성공 Render Macro.
-         *
-         * @see \App\Providers\ResponseMacroServiceProvider::boot()
-         * @param mixed $result
-         * @static 
-         */ 
-        public static function success($result = null)
-        {
-                        return \Illuminate\Routing\ResponseFactory::success($result);
-        }
-                    /**
-         * 
-         *
-         * @see \App\Providers\ResponseMacroServiceProvider::boot()
-         * @param mixed $message
-         * @param mixed $result
-         * @static 
-         */ 
-        public static function message_success($message = '', $result = null)
-        {
-                        return \Illuminate\Routing\ResponseFactory::message_success($message, $result);
-        }
-                    /**
          * 결과 커스텀 하게 사용.
          *
          * @see \App\Providers\ResponseMacroServiceProvider::boot()
-         * @param mixed $statusCode
-         * @param mixed $message
          * @param mixed $result
+         * @param mixed $message
+         * @param mixed $statusCode
          * @static 
          */ 
-        public static function custom_success($statusCode = 200, $message = '', $result = null)
+        public static function success($result = null, $message = '', $statusCode = 200)
         {
-                        return \Illuminate\Routing\ResponseFactory::custom_success($statusCode, $message, $result);
-        }
-                    /**
-         * 생성 메시지만 처리.
-         *
-         * @see \App\Providers\ResponseMacroServiceProvider::boot()
-         * @param int $statusCode
-         * @static 
-         */ 
-        public static function success_only_message($statusCode = 201)
-        {
-                        return \Illuminate\Routing\ResponseFactory::success_only_message($statusCode);
-        }
-                    /**
-         * 데이터만 Render Macro.
-         *
-         * @see \App\Providers\ResponseMacroServiceProvider::boot()
-         * @param mixed $response
-         * @static 
-         */ 
-        public static function success_only_data($response = null)
-        {
-                        return \Illuminate\Routing\ResponseFactory::success_only_data($response);
+                        return \Illuminate\Routing\ResponseFactory::success($result, $message, $statusCode);
         }
                     /**
          * 성공 No Contents Render Macro
@@ -17111,62 +17066,17 @@
      */ 
         class ResponseFactory {
                     /**
-         * 기본 성공 Render Macro.
-         *
-         * @see \App\Providers\ResponseMacroServiceProvider::boot()
-         * @param mixed $result
-         * @static 
-         */ 
-        public static function success($result = null)
-        {
-                        return \Illuminate\Routing\ResponseFactory::success($result);
-        }
-                    /**
-         * 
-         *
-         * @see \App\Providers\ResponseMacroServiceProvider::boot()
-         * @param mixed $message
-         * @param mixed $result
-         * @static 
-         */ 
-        public static function message_success($message = '', $result = null)
-        {
-                        return \Illuminate\Routing\ResponseFactory::message_success($message, $result);
-        }
-                    /**
          * 결과 커스텀 하게 사용.
          *
          * @see \App\Providers\ResponseMacroServiceProvider::boot()
-         * @param mixed $statusCode
-         * @param mixed $message
          * @param mixed $result
+         * @param mixed $message
+         * @param mixed $statusCode
          * @static 
          */ 
-        public static function custom_success($statusCode = 200, $message = '', $result = null)
+        public static function success($result = null, $message = '', $statusCode = 200)
         {
-                        return \Illuminate\Routing\ResponseFactory::custom_success($statusCode, $message, $result);
-        }
-                    /**
-         * 생성 메시지만 처리.
-         *
-         * @see \App\Providers\ResponseMacroServiceProvider::boot()
-         * @param int $statusCode
-         * @static 
-         */ 
-        public static function success_only_message($statusCode = 201)
-        {
-                        return \Illuminate\Routing\ResponseFactory::success_only_message($statusCode);
-        }
-                    /**
-         * 데이터만 Render Macro.
-         *
-         * @see \App\Providers\ResponseMacroServiceProvider::boot()
-         * @param mixed $response
-         * @static 
-         */ 
-        public static function success_only_data($response = null)
-        {
-                        return \Illuminate\Routing\ResponseFactory::success_only_data($response);
+                        return \Illuminate\Routing\ResponseFactory::success($result, $message, $statusCode);
         }
                     /**
          * 성공 No Contents Render Macro
