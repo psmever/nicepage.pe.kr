@@ -27,63 +27,27 @@ class ResponseMacroServiceProvider extends ServiceProvider
     public function boot(Request $request)
     {
         /**
-         * 기본 성공 Render Macro.
-         */
-        Response::macro('success', function ($result = null) {
-            $response = [
-                'message' => __('response.success'),
-            ];
-
-            if(!empty($result)) {
-                $response['result'] = $result;
-            }
-
-            return Response()->json($response);
-        });
-
-        Response::macro('message_success', function ($message = '', $result = null) {
-            $response = [
-                'message' => $message ?:__('response.success')
-            ];
-
-            if(!empty($result)) {
-                $response['result'] = $result;
-            }
-
-            return Response()->json($response);
-        });
-
-        /**
          * 결과 커스텀 하게 사용.
          */
-        Response::macro('custom_success', function($statusCode = 200, $message = '', $result = NULL) use ($request) {
-            $response = [
-                'message' => $message ?:__('response.success')
-            ];
+        Response::macro('success', function($result = NULL, $message = '', $statusCode = 200) use ($request) {
+
+            $response = [];
+
+            if(!empty($message)) {
+                $response['message'] = $message;
+            }
 
             if(!empty($result)) {
-                $response['result'] = $result;
+                $response = $result;
+            }
+
+            if(empty($response)) {
+                $response = [
+                    'message' => __('default.response.success')
+                ];
             }
 
             return Response()->json($response, $statusCode);
-        });
-
-        /**
-         * 생성 메시지만 처리.
-         */
-        Response::macro('success_only_message', function (Int $statusCode = 201) {
-            $response = [
-                'message' => __('response.process_success'),
-            ];
-
-            return Response()->json($response, $statusCode);
-        });
-
-        /**
-         * 데이터만 Render Macro.
-         */
-        Response::macro('success_only_data', function ($response = null) {
-            return Response()->json($response);
         });
 
         /**
@@ -101,7 +65,7 @@ class ResponseMacroServiceProvider extends ServiceProvider
             if($request->wantsJson()) {
                 if(is_array($error_message)) {
                     $response = [
-                        'error_message' => $error_message['message'] ?: __('response.error'),
+                        'error_message' => $error_message['message'] ?: __('default.response.error'),
                         'error' => $error_message['error']
                     ];
                 } else {
@@ -113,7 +77,7 @@ class ResponseMacroServiceProvider extends ServiceProvider
                 return Response()->json($response, $statusCode);
             } else {
                 if(is_array($error_message)) {
-                    $responseText = 'error_message: ' . $error_message['message'] ?: __('response.error');
+                    $responseText = 'error_message: ' . $error_message['message'] ?: __('default.response.error');
                     $responseText .= '<br />' . 'error: ' . $error_message['error'];
                 } else {
                     $responseText = 'error_message: ' . $error_message;
