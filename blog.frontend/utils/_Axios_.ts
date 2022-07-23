@@ -16,17 +16,18 @@ interface serviceInterface {
     payload: any;
 }
 
-const apiBaseURLL: string | undefined = _.isUndefined(process.env.REACT_APP_API_URL)
+const apiBaseURLL: string | undefined = _.isUndefined(process.env.NEXT_PUBLIC_API_URL)
     ? 'http://localhost'
-    : process.env.REACT_APP_API_URL;
-
+    : process.env.NEXT_PUBLIC_API_URL;
 export const axiosDefaultHeader: AxiosRequestConfig = {
     baseURL: apiBaseURLL,
     timeout: 20000,
     headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
-        'Request-Client-Type': 'S01010',
+        'Request-Client-Type': _.isUndefined(process.env.NEXT_PUBLIC_CLIENT_TYPE)
+            ? ''
+            : process.env.NEXT_PUBLIC_CLIENT_TYPE,
         Accept: 'application/json',
         Authorization: '',
     },
@@ -125,33 +126,25 @@ export default ({ method = 'post', url, payload }: serviceInterface): any => {
 
         // FIXME 서버 상태, 인증 외에 401 에러 처리 어떻게 할껀지?
         if (!options.shouldIntercept(error)) {
+            const errorMessage = error.response?.data.error_message
+                ? error.response?.data.error_message
+                : error.message;
+
             if (status === 503) {
                 // 서버 에러
-                console.debug('Server Error', error.response.data.error.error_message);
-                return Promise.resolve({
-                    status: false,
-                    message: error.response?.data.error.error_message,
-                });
+                Helper.COLORLOG('Server Error' + errorMessage, 'error');
             } else if (status === 412) {
                 // 헤더 체크 에러.
-                console.debug('Client Error', error.response.data.error.error_message);
-                return Promise.resolve({
-                    status: false,
-                    message: error.response?.data.error.error_message,
-                });
+                Helper.COLORLOG('Client Error' + errorMessage, 'error');
             } else if (status === 429) {
                 // 너무 많은 요청 일때.
-                console.debug('Server Error', error.response.data.error.error_message);
-                return Promise.resolve({
-                    status: false,
-                    message: error.response?.data.error.error_message,
-                });
-            } else {
-                return Promise.resolve({
-                    status: false,
-                    message: error.response?.data.error.error_message,
-                });
+                Helper.COLORLOG('Client Error' + errorMessage, 'error');
             }
+
+            return Promise.resolve({
+                status: false,
+                message: errorMessage,
+            });
         }
 
         if (error.config._retry || error.config._queued) {

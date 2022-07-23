@@ -1,6 +1,8 @@
 import type { NextPage } from 'next';
 import { KeyboardEvent, useRef, useState } from 'react';
 import Head from 'next/head';
+import * as authService from '@services/auth.service';
+import * as Helper from '@utils/Helper';
 
 const Login: NextPage = () => {
     const inputPasswordRef = useRef<HTMLInputElement | null>(null);
@@ -36,8 +38,20 @@ const Login: NextPage = () => {
         handleSubmit();
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         console.debug('submit');
+
+        const response = await authService.login({
+            email: loginInputValue.email,
+            password: loginInputValue.password,
+        });
+
+        if (response.status) {
+            Helper.saveLoginToken({
+                accessToken: response.payload.access_token,
+                refreshToken: response.payload.refresh_token,
+            });
+        }
     };
 
     return (

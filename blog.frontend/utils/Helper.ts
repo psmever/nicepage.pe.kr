@@ -72,15 +72,15 @@ export const storageManager = {
  * @param payload
  */
 export function saveLoginToken({
-    access_token,
-    refresh_token,
+    accessToken,
+    refreshToken,
 }: {
-    access_token: string;
-    refresh_token: string;
+    accessToken: string;
+    refreshToken: string;
 }): void {
     storageManager.set('loginState', 'true');
-    storageManager.set('accessToken', access_token);
-    storageManager.set('refreshToken', refresh_token);
+    storageManager.set('accessToken', accessToken);
+    storageManager.set('refreshToken', refreshToken);
 }
 
 /**
