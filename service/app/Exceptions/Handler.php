@@ -2,48 +2,53 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Laravel\Passport\Exceptions\OAuthServerException;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Route;
 use PDOException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
-use Illuminate\Support\Facades\Response;
-
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Route;
 
 class Handler extends ExceptionHandler
 {
+    protected string $messages = '';
     /**
-     * @var string|false
+     * @var string|bool
      */
     protected string|bool $loggingId = '';
 
     /**
-     * @var string
+     * A list of exception types with their corresponding custom log levels.
+     *
+     * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
      */
-    protected string $loggingChannel = '';
+    protected $levels = [
+        //
+    ];
 
     /**
      * A list of the exception types that are not reported.
      *
-     * @var array
+     * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
+        \App\Exceptions\ClientErrorException::class,
+        \App\Exceptions\ForbiddenErrorException::class,
+        \App\Exceptions\ServerErrorException::class,
+        \App\Exceptions\ServiceErrorException::class,
     ];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $dontFlash = [
         'current_password',
@@ -67,45 +72,13 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function register(): void
+    public function register()
     {
-//        $this->reportable(function (Throwable $e) {
-//            //
-//        });
-
-        $slackLogging = env('APP_ENV') == "production" || env('APP_ENV') == "development";
-
-        /**
-         * 정상 이지만 에러 메시지를 보낼 경우.
-         *
-         * ServiceException
-         */
-        $this->renderable(function (ServiceErrorException $e) use ($slackLogging) {
-
-            $this->loggingChannel = 'ServiceErrorException';
-            $error_message = $e->getMessage() ?: __('default.exception.error_exception');
-            $loggerMessage = $this->getLoggerMessage($error_message);
-
-            Log::channel('ServiceErrorExceptionLog')->error($loggerMessage['file']);
-
-            if ($slackLogging) {
-                Log::channel('slack')->error($loggerMessage['slack']);
-            }
-
-            return Response::error(200, $error_message);
-        });
-
         /**
          * NotFoundHttpException
          */
         $this->renderable(function (NotFoundHttpException $e) {
-
-            $this->loggingChannel = 'NotFoundHttpException';
             $error_message = $e->getMessage() ?: __('default.exception.NotFoundHttpException');
-            $loggerMessage = $this->getLoggerMessage($error_message);
-
-            Log::channel('NotFoundHttpException')->error($loggerMessage['file']);
-
             return Response::error(404, $error_message);
         });
 
@@ -113,174 +86,97 @@ class Handler extends ExceptionHandler
          * MethodNotAllowedHttpException
          */
         $this->renderable(function (MethodNotAllowedHttpException $e) {
-
-            if ( !$e ) return false;
-
-            $this->loggingChannel = 'MethodNotAllowedHttpException';
-            $error_message = __('default.exception.MethodNotAllowedHttpException');
-            $loggerMessage = $this->getLoggerMessage($error_message);
-
-            Log::channel('MethodNotAllowedHttpException')->error($loggerMessage['file']);
-
-            return Response::error(405, $error_message);
+            $this->messages = __('default.exception.MethodNotAllowedHttpException');
+            return Response::error(405, __('default.exception.MethodNotAllowedHttpException'));
         });
-
-        /**
-         * ClientErrorException
-         */
-        $this->renderable(function (ClientErrorException $e) use ($slackLogging) {
-
-            $this->loggingChannel = 'ClientErrorException';
-            $error_message = $e->getMessage() ?: __('default.exception.ClientErrorException');
-            $loggerMessage = $this->getLoggerMessage($error_message);
-
-            Log::channel('ClientErrorException')->error($loggerMessage['file']);
-
-            if ($slackLogging) {
-                Log::channel('slack')->error($loggerMessage['slack']);
-            }
-
-            return Response::error(412, $error_message);
-        });
-
-        /**
-         * ServerErrorException
-         */
-        $this->renderable(function (ServerErrorException $e) use ($slackLogging) {
-
-            $this->loggingChannel = 'ServerErrorException';
-            $error_message = $e->getMessage() ?: __('default.exception.ServerErrorException');
-            $loggerMessage = $this->getLoggerMessage($error_message);
-
-            Log::channel('ServerErrorException')->error($loggerMessage['file']);
-
-            if ($slackLogging) {
-                Log::channel('slack')->error($loggerMessage['slack']);
-            }
-
-            return Response::error(500, $error_message);
-        });
-
 
         /**
          * ForbiddenErrorException
          */
         $this->renderable(function (ForbiddenErrorException $e) {
-
-            $this->loggingChannel = 'ForbiddenErrorException';
             $error_message = ($e->getMessage()) ?: __('default.exception.ForbiddenErrorException');
-            $loggerMessage = $this->getLoggerMessage($error_message);
-
-            Log::channel('ForbiddenErrorException')->error($loggerMessage['file']);
-
+            $this->messages = $error_message;
             return Response::error(403, $error_message);
         });
 
         /**
          * AuthenticationException
          */
-        $this->renderable(function (AuthenticationException $e) use ($slackLogging) {
-
-            $this->loggingChannel = 'AuthenticationException';
-            $error_message = $e->getMessage() == "Unauthenticated." ? __('default.exception.AuthenticationException'): $e->getMessage();
-            $loggerMessage = $this->getLoggerMessage($error_message);
-
-            Log::channel('AuthenticationException')->error($loggerMessage['file']);
-
-            if ($slackLogging) {
-                Log::channel('slack')->debug($loggerMessage['slack']);
-            }
-
+        $this->renderable(function (AuthenticationException $e) {
+            $error_message = $e->getMessage() == "Unauthenticated." ? __('default.exception.AuthenticationException') : $e->getMessage();
+            $this->messages = $error_message;
             return Response::error(401, $error_message);
         });
-
 
         /**
          * ThrottleRequestsException
          */
-        $this->renderable(function (ThrottleRequestsException $e) use ($slackLogging) {
-
-            $this->loggingChannel = 'ThrottleRequestsException';
+        $this->renderable(function (ThrottleRequestsException $e) {
             $error_message = ($e->getMessage()) ?: __('default.exception.ThrottleRequestsException');
-            $loggerMessage = $this->getLoggerMessage($error_message);
-
-            Log::channel('ThrottleRequestsException')->error($loggerMessage['file']);
-
-            if ($slackLogging) {
-                Log::channel('slack')->debug($loggerMessage['slack']);
-            }
-
+            $this->messages = $error_message;
             return Response::error(429, $error_message);
         });
 
         /**
          * PDOException
          */
-        $this->renderable(function (PDOException $e) use ($slackLogging) {
-
-            $this->loggingChannel = 'PDOException';
-            $error_message = ($e->getMessage()) ?: __('default.exception.PDOException');
-            $loggerMessage = $this->getLoggerMessage($error_message);
-
-            Log::channel('PDOException')->error($loggerMessage['file']);
-
-            if ($slackLogging) {
-                Log::channel('slack')->debug($loggerMessage['slack']);
-            }
-
-            return Response::error(
-                500,
-                __('exception.PDOException'),
-            );
+        $this->renderable(function (PDOException $e) {
+            $this->messages = __('exception.PDOException');
+            return Response::error(500, __('exception.PDOException'));
         });
 
         /**
-         * EtcException
+         * Throwable
          */
-        $this->renderable(function (Throwable $e) use ($slackLogging) {
+        $this->renderable(function (Throwable $e) {
+            $this->messages = $e->getMessage();
+            return Response::error(500, ['message' => __('default.exception.error_exception'), 'error' => $e->getMessage()]);
+        });
 
-            $this->loggingChannel = 'Throwable';
+    }
 
-            $errorMessage = $e->getMessage();
-            $errorCode = $e->getCode();
-            $errorFile = $e->getFile();
-            $errorline = $e->getLine();
-//            $errorTrace = $e->getTrace();
-            $errorTraceAsString = $e->getTraceAsString();
+    public function report(Throwable $exception)
+    {
+        parent::report($exception);
 
-            $error_message = <<<EOF
+        $request_ip = request()->ip();
 
-message: $errorMessage
-code: $errorCode
-file: $errorFile
-line: $errorline
-traceAsString: $errorTraceAsString
+        $logRouteName = Route::currentRouteName();
+        $logRouteAction = Route::currentRouteAction();
+        $current_url = url()->current();
+        $logHeaderInfo = json_encode(request()->header());
+        $logBodyInfo = json_encode(request()->all());
+        $method = request()->method();
+        $environment = env('APP_ENV');
+        $exceptionName = get_class($exception);
+        $exceptionFile = $exception->getFile().' '.$exception->getLine();
+
+        $logMessages = <<<EOF
+
+ENV: $environment
+ID: $this->loggingId
+RequestIP: $request_ip
+Message: $exceptionName
+Current_url: $current_url
+RouteName: $logRouteName
+Method: $method
+RouteAction: $logRouteAction
+Header: $logHeaderInfo
+Body: $logBodyInfo
+File: $exceptionFile
 
 EOF;
-            $loggerMessage = $this->getLoggerMessage($error_message);
+        // 레포트 제외 체크.
+        if($this->shouldReport($exception)) {
+            Log::channel('serverlog')->error($logMessages);
+        }
 
-            Log::channel('Throwable')->error($loggerMessage['file']);
-
-            if ($slackLogging) {
-                Log::channel('slack')->debug($loggerMessage['slack']);
-            }
-
-            return Response::error(
-                500,
-                [
-                    'message' => __('default.exception.error_exception'),
-                    'error' => $e->getMessage()
-                ]
-            );
-        });
     }
 
     /**
-     * 예외 renderable
-     *
-     * @param Request $request
+     * @param $request
      * @param Throwable $e
-     * @return JsonResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
      * @throws Throwable
      */
     public function render($request, Throwable $e)
@@ -298,51 +194,5 @@ EOF;
         }
 
         return parent::render($request, $e);
-    }
-
-    /**
-     * 로그할 메시지 생성.
-     *
-     * @param string $logMessage
-     * @return array
-     */
-    function getLoggerMessage(string $logMessage = ''): array
-    {
-        $request_ip = request()->ip();
-
-        $logRouteName = Route::currentRouteName();
-        $logRouteAction = Route::currentRouteAction();
-        $current_url = url()->current();
-        $logHeaderInfo = json_encode(request()->header());
-        $logBodyInfo = json_encode(request()->all());
-        $method = request()->method();
-        $environment = env('APP_ENV');
-
-        return array(
-            'file' => <<<EOF
-
-ENV: $environment
-CHANNEL: $this->loggingChannel
-ID: $this->loggingId
-RequestIP: $request_ip
-Message: $logMessage
-Current_url: $current_url
-RouteName: $logRouteName
-Method: $method
-RouteAction: $logRouteAction
-Header: $logHeaderInfo
-Body: $logBodyInfo
-
-EOF,
-            'slack' => <<<EOF
-
-ENV: $environment
-CHANNEL: $this->loggingChannel
-ID: $this->loggingId
-Current_url: $current_url
-Message: $logMessage
-EOF
-        );
-
     }
 }

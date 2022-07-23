@@ -23,7 +23,7 @@ class ApiAfterMiddleware
          * ajax 아닐때.
          */
         if (!$request->wantsJson()) {
-            throw new ClientErrorException(__('정상적인 요청이 아닙니다.'));
+            throw new ClientErrorException(__('정상적인 요청이 아닙니다.'), 412);
         }
 
         // 클라이언트 체크 예외 라우터.
@@ -34,7 +34,7 @@ class ApiAfterMiddleware
 
         if (!in_array(Route::currentRouteName(), $exceptionRouteName)) {
             if (empty($clientType) || !($clientType ==  config('extract.default.front_code') || $clientType == config('extract.default.ios_code') || $clientType == config('extract.default.android_code') || $clientType == config('extract.default.service_front_code'))) {
-                throw new ClientErrorException(__('default.exception.ClientTypeError'));
+                throw new ClientErrorException(__('default.exception.ClientTypeError'), 412);
             }
         }
 

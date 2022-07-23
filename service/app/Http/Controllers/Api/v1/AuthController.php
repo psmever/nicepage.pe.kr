@@ -15,10 +15,13 @@ class AuthController extends Controller
         $this->authServices = $authServices;
     }
 
-    /*
-     * 로그인
+    /**
+     * 로그인 시도.
+     * @return mixed
+     * @throws \App\Exceptions\ClientErrorException
+     * @throws \App\Exceptions\ServerErrorException
      */
-    public function login()
+    public function login(): mixed
     {
         return Response::success($this->authServices->attemptLogin());
     }

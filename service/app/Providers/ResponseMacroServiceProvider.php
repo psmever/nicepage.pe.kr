@@ -75,15 +75,15 @@ class ResponseMacroServiceProvider extends ServiceProvider
 
                 }
                 return Response()->json($response, $statusCode);
-            } else {
-                if(is_array($error_message)) {
-                    $responseText = 'error_message: ' . $error_message['message'] ?: __('default.response.error');
-                    $responseText .= '<br />' . 'error: ' . $error_message['error'];
-                } else {
-                    $responseText = 'error_message: ' . $error_message;
-                }
-                return Response($responseText, $statusCode);
             }
+
+            if(is_array($error_message)) {
+                $responseText = 'error_message: ' . $error_message['message'] ?: __('default.response.error');
+                $responseText .= '<br />' . 'error: ' . $error_message['error'];
+            } else {
+                $responseText = 'error_message: ' . $error_message;
+            }
+            return Response($responseText, $statusCode);
         });
     }
 }
