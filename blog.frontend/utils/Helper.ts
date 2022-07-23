@@ -141,16 +141,12 @@ export function saveRefreshToken({
  * @param value
  */
 export const isEmpty = function (value: any) {
-    if (
+    return (
         value === '' ||
         value === null ||
         value === undefined ||
         (typeof value === 'object' && !Object.keys(value).length)
-    ) {
-        return true;
-    } else {
-        return false;
-    }
+    );
 };
 
 /**
