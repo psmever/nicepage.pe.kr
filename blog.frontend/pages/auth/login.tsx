@@ -29,18 +29,16 @@ const Login: NextPage = () => {
         }
 
         if (targetName === 'password') {
-            handleSubmit();
+            handleSubmit().then();
             return;
         }
     };
 
     const handleClickLoginButton = () => {
-        handleSubmit();
+        handleSubmit().then();
     };
 
     const handleSubmit = async () => {
-        console.debug('submit');
-
         const response = await authService.login({
             email: loginInputValue.email,
             password: loginInputValue.password,
@@ -51,6 +49,9 @@ const Login: NextPage = () => {
                 accessToken: response.payload.access_token,
                 refreshToken: response.payload.refresh_token,
             });
+        } else {
+            // 에러 처리.
+            Helper.COLORLOG(response.message, 'error');
         }
     };
 

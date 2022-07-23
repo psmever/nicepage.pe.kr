@@ -39,10 +39,10 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        \App\Exceptions\ClientErrorException::class,
-        \App\Exceptions\ForbiddenErrorException::class,
-        \App\Exceptions\ServerErrorException::class,
-        \App\Exceptions\ServiceErrorException::class,
+//        \App\Exceptions\ClientErrorException::class,
+//        \App\Exceptions\ForbiddenErrorException::class,
+//        \App\Exceptions\ServerErrorException::class,
+//        \App\Exceptions\ServiceErrorException::class,
     ];
 
     /**
@@ -72,7 +72,7 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         /**
          * NotFoundHttpException
@@ -137,8 +137,6 @@ class Handler extends ExceptionHandler
 
     public function report(Throwable $exception)
     {
-        parent::report($exception);
-
         $request_ip = request()->ip();
 
         $logRouteName = Route::currentRouteName();
@@ -161,9 +159,10 @@ Current_url: $current_url
 RouteName: $logRouteName
 Method: $method
 RouteAction: $logRouteAction
+File: $exceptionFile
 Header: $logHeaderInfo
 Body: $logBodyInfo
-File: $exceptionFile
+
 
 EOF;
         // 레포트 제외 체크.
@@ -171,6 +170,7 @@ EOF;
             Log::channel('serverlog')->error($logMessages);
         }
 
+        parent::report($exception);
     }
 
     /**
@@ -179,7 +179,7 @@ EOF;
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
      * @throws Throwable
      */
-    public function render($request, Throwable $e)
+    public function render($request, Throwable $e): \Illuminate\Http\Response|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
     {
         /**
          * renderable 에서 ModelNotFoundException 를 캐치 못해서 render 함수에 추가.
