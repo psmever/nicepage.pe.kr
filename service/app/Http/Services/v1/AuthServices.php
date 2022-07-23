@@ -58,13 +58,13 @@ class AuthServices
     {
 
         $validator = Validator::make($this->currentRequest->all(), [
-            'login_email' => 'required|exists:users,email',
-            'login_password' => 'required',
+            'email' => 'required|exists:users,email',
+            'password' => 'required',
         ],
             [
-                'login_email.required' => __('로그인 이메일을 입력해 주세요.'),
-                'login_email.exists' => __('존재 하지 않는 이메일 입니다.'),
-                'login_password.required' => __('패스워드를 입력해 주세요'),
+                'email.required' => __('로그인 이메일을 입력해 주세요.'),
+                'email.exists' => __('존재 하지 않는 이메일 입니다.'),
+                'password.required' => __('패스워드를 입력해 주세요'),
             ]);
 
         # 로그인 실패.
@@ -73,13 +73,13 @@ class AuthServices
         }
 
         # 비밀번호 실패.
-        if (!Auth::attempt(['email' => $this->currentRequest->input('login_email'), 'password' => $this->currentRequest->input('login_password')])) {
+        if (!Auth::attempt(['email' => $this->currentRequest->input('email'), 'password' => $this->currentRequest->input('password')])) {
 
             throw new ClientErrorException(__('비밀 번호를 확인해 주세요.'));
         }
 
         # 토큰 처리.
-        $taskToken = $this->newToken($this->currentRequest->input('login_email'), $this->currentRequest->input('login_password'));
+        $taskToken = $this->newToken($this->currentRequest->input('email'), $this->currentRequest->input('password'));
 
         return [
             'access_token' => $taskToken->access_token,
