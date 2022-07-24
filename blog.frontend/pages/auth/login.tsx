@@ -3,8 +3,10 @@ import { KeyboardEvent, useRef, useState } from 'react';
 import Head from 'next/head';
 import * as authService from '@services/auth.service';
 import * as Helper from '@utils/Helper';
+import { useRouter } from 'next/router';
 
 const Login: NextPage = () => {
+    const router = useRouter();
     const inputPasswordRef = useRef<HTMLInputElement | null>(null);
     const [loginInputValue, setLoginInputValue] = useState<{ email: string; password: string }>({
         email: '',
@@ -49,6 +51,8 @@ const Login: NextPage = () => {
                 accessToken: response.payload.access_token,
                 refreshToken: response.payload.refresh_token,
             });
+
+            await router.push('/welcome');
         } else {
             // 에러 처리.
             Helper.COLORLOG(response.message, 'error');

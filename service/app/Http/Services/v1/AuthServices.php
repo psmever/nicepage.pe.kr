@@ -82,7 +82,8 @@ class AuthServices
 
         return [
             'access_token' => $taskToken->access_token,
-            'refresh_token' => $taskToken->refresh_token
+            'refresh_token' => $taskToken->refresh_token,
+            'expires_in' => $taskToken->expires_in
         ];
     }
 
@@ -155,7 +156,8 @@ class AuthServices
 
         return [
             'access_token' => $taskToken->access_token,
-            'refresh_token' => $taskToken->refresh_token
+            'refresh_token' => $taskToken->refresh_token,
+            'expires_in' => $taskToken->expires_in
         ];
     }
 }

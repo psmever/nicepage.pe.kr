@@ -202,7 +202,7 @@ export default ({ method = 'post', url, payload }: serviceInterface): any => {
         } else if (status === 401) {
             return Promise.resolve({
                 status: false,
-                message: error.response?.data.error.error_message,
+                message: error.response?.data.error_message,
             });
         }
     };
