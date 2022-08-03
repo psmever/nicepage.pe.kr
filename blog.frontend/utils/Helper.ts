@@ -14,8 +14,8 @@ export const DEBUG = (e: any) => {
  * @constructor
  */
 export const COLORLOG = (
-    message: string,
-    color: 'success' | 'info' | 'error' | 'warning'
+    color: 'success' | 'info' | 'error' | 'warning',
+    message: string
 ): void => {
     switch (color) {
         case 'success':

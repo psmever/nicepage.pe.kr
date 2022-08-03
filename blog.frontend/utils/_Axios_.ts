@@ -46,7 +46,7 @@ const setTokenData = ({ access_token, refresh_token }: LocalTokenInterface): voi
  * 토큰 리프레쉬
  */
 const handleTokenRefresh = (): Promise<LocalTokenInterface> => {
-    Helper.COLORLOG(':: Try Token Refresh :: ', 'warning');
+    Helper.COLORLOG('warning', ':: Try Token Refresh :: ');
     const refreshToken = Helper.getRefreshToken();
     return new Promise((resolve, reject) => {
         const _thisAxios_: AxiosInstance = axios.create(axiosDefaultHeader);
@@ -55,14 +55,14 @@ const handleTokenRefresh = (): Promise<LocalTokenInterface> => {
                 refresh_token: refreshToken,
             })
             .then(({ data }) => {
-                Helper.COLORLOG(':: Success Token Refresh :: ', 'success');
+                Helper.COLORLOG('success', ':: Success Token Refresh :: ');
                 resolve({
                     access_token: data.access_token,
                     refresh_token: data.refresh_token,
                 });
             })
             .catch(() => {
-                Helper.COLORLOG(':: Error Token Refresh :: ', 'error');
+                Helper.COLORLOG('error', ':: Error Token Refresh :: ');
                 reject({
                     access_token: '',
                     refresh_token: '',
@@ -132,13 +132,13 @@ export default ({ method = 'post', url, payload }: serviceInterface): any => {
 
             if (status === 503) {
                 // 서버 에러
-                Helper.COLORLOG('Server Error' + errorMessage, 'error');
+                Helper.COLORLOG('error', 'Server Error' + errorMessage);
             } else if (status === 412) {
                 // 헤더 체크 에러.
-                Helper.COLORLOG('Client Error' + errorMessage, 'error');
+                Helper.COLORLOG('error', 'Client Error' + errorMessage);
             } else if (status === 429) {
                 // 너무 많은 요청 일때.
-                Helper.COLORLOG('Client Error' + errorMessage, 'error');
+                Helper.COLORLOG('error', 'Client Error' + errorMessage);
             }
 
             return Promise.resolve({
@@ -187,7 +187,7 @@ export default ({ method = 'post', url, payload }: serviceInterface): any => {
                     })
                     .catch(() => {
                         // 토큰 Refresh Error
-                        Helper.COLORLOG(':: Fail Token Refresh :: ', 'error');
+                        Helper.COLORLOG('error', ':: Fail Token Refresh :: ');
                         Helper.removeLoginToken();
                         // processQueue(err, '');
                         // reject(err);
