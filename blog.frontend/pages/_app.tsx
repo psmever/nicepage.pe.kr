@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import '@styles/GithubMarkdown.css';
 import { ReactElement } from 'react';
 import type { AppProps } from 'next/app';
 import PageWithLayoutType from 'types/pageWithLayouts';

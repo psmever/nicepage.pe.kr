@@ -7,7 +7,11 @@
 // ref: https://uiwjs.github.io/react-md-editor/#support-nextjs
 const removeImports = require('next-remove-imports')();
 module.exports = removeImports({
-    // webpack(config, options) {
-    //     return config;
-    // },
+  // webpack(config, options) {
+  //     return config;
+  // },
+  experimental: { esmExternals: true },
+  images: {
+    domains: ['media.nicepage.pe.kr'],
+  },
 });

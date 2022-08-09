@@ -1,9 +1,10 @@
 import { NextPage } from 'next';
+import { MarkdownView } from './markdownView';
 
 const PriviewBox: NextPage = () => {
     return (
-        <div className="flex-1 text-grey-darker text-center bg-grey-light px-4 py-2 m-2">
-            Markdown Render
+        <div className="flex-1">
+            <MarkdownView />
         </div>
     );
 };
