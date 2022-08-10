@@ -1,10 +1,9 @@
-import { FC } from 'react';
+import { NextLayoutPage } from 'next';
+import type { ReactElement } from 'react';
 import ManageLayout from '@components/layouts/manage';
 import { EditorBox, PriviewBox } from '@components/elements';
 
-type CreatePost = FC & { layout: typeof ManageLayout };
-
-const CreatePost: CreatePost = () => {
+const CreatePost: NextLayoutPage = () => {
     return (
         <div className="flex items-stretch bg-grey-lighter w-full min-h-screen border-2">
             <EditorBox />
@@ -13,6 +12,8 @@ const CreatePost: CreatePost = () => {
     );
 };
 
-CreatePost.layout = ManageLayout;
+CreatePost.getLayout = (page: ReactElement) => {
+    return <ManageLayout>{page}</ManageLayout>;
+};
 
 export default CreatePost;

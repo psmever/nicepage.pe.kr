@@ -1,12 +1,10 @@
-import React, { FC } from 'react';
+import { NextPage } from 'next';
+import React from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
-import MainLayout from '@components/layouts/main';
 
-type Home = FC & { layout: typeof MainLayout };
-
-const Home: Home = () => {
+const Home: NextPage = () => {
     return (
         <div className={styles.container}>
             <Head>
@@ -68,7 +66,5 @@ const Home: Home = () => {
         </div>
     );
 };
-
-Home.layout = MainLayout;
 
 export default Home;

@@ -1,21 +1,17 @@
 import '../styles/globals.css';
 import '@styles/GithubMarkdown.css';
-import { ReactElement } from 'react';
-import type { AppProps } from 'next/app';
-import PageWithLayoutType from 'types/pageWithLayouts';
+import React, { ReactNode } from 'react';
+import type { NextComponentType } from 'next';
+import type { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';
 
-type AppLayoutProps = AppProps & {
-    Component: PageWithLayoutType;
-    pageProps: any;
+const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = (
+    props: AppLayoutProps
+) => {
+    const { Component, pageProps } = props;
+
+    const getLayout = Component.getLayout || ((page: ReactNode) => page);
+
+    return <>{getLayout(<Component {...pageProps} />)}</>;
 };
-
-function MyApp({ Component, pageProps }: AppLayoutProps) {
-    const Layout = Component.layout || ((children: ReactElement) => <>{children}</>);
-    return (
-        <Layout>
-            <Component {...pageProps} />
-        </Layout>
-    );
-}
 
 export default MyApp;

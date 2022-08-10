@@ -1,10 +1,12 @@
-import type { NextPage } from 'next';
+import { NextLayoutPage } from 'next';
+import type { ReactElement } from 'react';
+import ManageLayout from '@components/layouts/manage';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import * as authService from '@services/auth.service';
 import { useRouter } from 'next/router';
 
-const welcome: NextPage = () => {
+const welcome: NextLayoutPage = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const router = useRouter();
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -82,6 +84,10 @@ const welcome: NextPage = () => {
             </div>
         </div>
     );
+};
+
+welcome.getLayout = (page: ReactElement) => {
+    return <ManageLayout>{page}</ManageLayout>;
 };
 
 export default welcome;

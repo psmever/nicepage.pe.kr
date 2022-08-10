@@ -1,12 +1,12 @@
-import { FC, KeyboardEvent, useRef, useState } from 'react';
+import { NextLayoutPage } from 'next';
+import { KeyboardEvent, useRef, useState } from 'react';
+import type { ReactElement } from 'react';
 import * as authService from '@services/auth.service';
 import * as Helper from '@utils/Helper';
 import { useRouter } from 'next/router';
 import ManageLayout from '@components/layouts/manage';
 
-type Login = FC & { layout: typeof ManageLayout };
-
-const Login: Login = () => {
+const Login: NextLayoutPage = () => {
     const router = useRouter();
     const inputPasswordRef = useRef<HTMLInputElement | null>(null);
     const [loginInputValue, setLoginInputValue] = useState<{ email: string; password: string }>({
@@ -95,6 +95,8 @@ const Login: Login = () => {
     );
 };
 
-Login.layout = ManageLayout;
+Login.getLayout = (page: ReactElement) => {
+    return <ManageLayout>{page}</ManageLayout>;
+};
 
 export default Login;
