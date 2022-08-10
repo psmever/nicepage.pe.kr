@@ -1,9 +1,9 @@
 import { NextPage } from 'next';
 import { useCallback, useEffect, useState } from 'react';
-import { useWindowResize } from '@hooks/useWindowResize';
+import { useWindowResize } from '@Hooks/useWindowResize';
 
-import { Editor } from './editor';
-import { EditorTag } from './editorTag';
+import { Editor } from '@Elements/markdown/editor';
+import { TagInput } from './tagInput';
 
 type DraftPageProps = {};
 
@@ -44,7 +44,7 @@ const EditorBox: NextPage<DraftPageProps> = () => {
                 </div>
 
                 <div className="w-full mb-4 grid-cols-12">
-                    <EditorTag />
+                    <TagInput />
                 </div>
 
                 <div className="w-full mb-4 grid-cols-12">

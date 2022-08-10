@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import * as Helper from '@utils/Helper';
+import * as Helper from '@Utils/Helper';
 import * as _ from 'lodash';
 
 export interface LocalTokenInterface {

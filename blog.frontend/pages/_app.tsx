@@ -1,5 +1,5 @@
-import '../styles/globals.css';
-import '@styles/GithubMarkdown.css';
+import '@Styles/globals.css';
+import '@Styles/GithubMarkdown.css';
 import React, { ReactNode } from 'react';
 import type { NextComponentType } from 'next';
 import type { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';

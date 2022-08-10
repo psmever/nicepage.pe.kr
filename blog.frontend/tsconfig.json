@@ -19,25 +19,28 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@components/*": [
+      "@Components/*": [
         "components/*"
       ],
-      "@styles/*": [
+      "@Elements/*": [
+        "components/elements/*"
+      ],
+      "@Styles/*": [
         "styles/*"
       ],
-      "@utils/*": [
+      "@Utils/*": [
         "utils/*"
       ],
-      "@lib/*": [
+      "@Lib/*": [
         "lib/*"
       ],
-      "@services/*": [
+      "@Services/*": [
         "services/*"
       ],
-      "@types/*": [
+      "@Types/*": [
         "types/*"
       ],
-      "@hooks/*": [
+      "@Hooks/*": [
         "hooks/*"
       ]
     },

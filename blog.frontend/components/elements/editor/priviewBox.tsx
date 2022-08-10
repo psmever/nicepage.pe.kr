@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { MarkdownView } from './markdownView';
+import { MarkdownView } from '@Elements/markdown/markdownView';
 
 const PriviewBox: NextPage = () => {
     return (

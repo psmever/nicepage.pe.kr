@@ -3,7 +3,7 @@ import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { mdText } from '@services/md.sample';
+import { mdText } from '@Services/md.sample';
 
 export const MarkdownView: NextPage = () => {
     return (

@@ -1,10 +1,10 @@
 import { NextLayoutPage } from 'next';
 import { KeyboardEvent, useRef, useState } from 'react';
 import type { ReactElement } from 'react';
-import * as authService from '@services/auth.service';
-import * as Helper from '@utils/Helper';
+import * as authService from '@Services/auth.service';
+import * as Helper from '@Utils/Helper';
 import { useRouter } from 'next/router';
-import ManageLayout from '@components/layouts/manage';
+import ManageLayout from '@Components/layouts/manage';
 
 const Login: NextLayoutPage = () => {
     const router = useRouter();

@@ -1,4 +1,4 @@
-import _Axios_ from '@utils/_Axios_';
+import _Axios_ from '@Utils/_Axios_';
 
 export interface ServerDefaultResult<T> {
     status: boolean;

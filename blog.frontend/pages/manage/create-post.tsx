@@ -1,7 +1,7 @@
 import { NextLayoutPage } from 'next';
 import type { ReactElement } from 'react';
-import ManageLayout from '@components/layouts/manage';
-import { EditorBox, PriviewBox } from '@components/elements';
+import ManageLayout from '@Components/layouts/manage';
+import { EditorBox, PriviewBox } from '@Components/elements';
 
 const CreatePost: NextLayoutPage = () => {
     return (

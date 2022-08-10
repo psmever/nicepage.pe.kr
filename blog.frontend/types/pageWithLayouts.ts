@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import type { ReactElement } from 'react';
-import MainLayout from '@components/layouts/main';
-import ManageLayout from '@components/layouts/manage';
+import MainLayout from '@Components/layouts/main';
+import ManageLayout from '@Components/layouts/manage';
 
 export type PageWithMainLayoutType = NextPage & { layout: typeof MainLayout };
 export type PageWithManageLayoutType = NextPage & { layout: typeof ManageLayout };
