@@ -147,6 +147,7 @@ class Handler extends ExceptionHandler
         $method = request()->method();
         $environment = env('APP_ENV');
         $exceptionName = get_class($exception);
+        $exceptionMessage = $exception->getMessage();
         $exceptionFile = $exception->getFile().' '.$exception->getLine();
 
         $logMessages = <<<EOF
@@ -154,7 +155,8 @@ class Handler extends ExceptionHandler
 ENV: $environment
 ID: $this->loggingId
 RequestIP: $request_ip
-Message: $exceptionName
+Name: $exceptionName
+Message: $exceptionMessage
 Current_url: $current_url
 RouteName: $logRouteName
 Method: $method
