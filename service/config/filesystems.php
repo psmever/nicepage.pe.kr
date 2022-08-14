@@ -56,6 +56,13 @@ return [
             'throw' => false,
         ],
 
+        /**
+         * Custom Setting
+         */
+        'forlocal' => [
+            'driver' => 'local',
+            'root' => storage_path('forlocal'),
+        ],
     ],
 
     /*
