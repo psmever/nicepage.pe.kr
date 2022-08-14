@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Services\v1;
+namespace App\Http\Services;
 
 use App\Exceptions\ClientErrorException;
 use App\Exceptions\ServerErrorException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
 
 class AuthServices
 {
@@ -139,7 +139,7 @@ class AuthServices
      * @throws ClientErrorException
      * @throws ServerErrorException
      */
-    public function attemptTokenRefresh()
+    public function attemptTokenRefresh(): array
     {
         $validator = Validator::make($this->currentRequest->all(), [
             'refresh_token' => 'required',

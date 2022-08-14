@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\AuthServices;
 use Illuminate\Support\Facades\Response;
-use App\Http\Services\V1\AuthServices;
 
 class AuthController extends Controller
 {
+    /**
+     * @var AuthServices
+     */
     protected AuthServices $authServices;
 
+    /**
+     * @param AuthServices $authServices
+     */
     function __construct(AuthServices $authServices)
     {
         $this->authServices = $authServices;

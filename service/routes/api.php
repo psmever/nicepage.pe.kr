@@ -25,6 +25,13 @@ Route::group(['as' => 'api.'], function () {
         Route::post('default', [\App\Http\Controllers\Api\TestController::class, 'default'])->name('default');
     });
 
+    Route::group(['prefix' => 'system', 'as' => 'system.'], function () {
+        Route::get('check-status', [\App\Http\Controllers\Api\SystemController::class, 'checkSystemStatus'])->name('check.status'); // 서버 체크
+        Route::get('check-notice', [\App\Http\Controllers\Api\SystemController::class, 'checkSystemNotice'])->name('check.notice'); // 서버 공지사항 체크
+//        Route::get('base-data', [SystemController::class, 'baseData'])->name('base.data');
+    });
+
+
     # v1.
     Route::group(['namespace' => 'v1', 'prefix' => 'v1', 'as' => 'v1.'], function () {
         # 인증
