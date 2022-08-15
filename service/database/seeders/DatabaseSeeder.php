@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,5 +16,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+
+        $this->call([
+            CodesSeeder::class,
+            UserSeeder::class,
+        ]);
     }
 }
