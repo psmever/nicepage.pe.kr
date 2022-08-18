@@ -28,7 +28,7 @@ Route::group(['as' => 'api.'], function () {
     Route::group(['prefix' => 'system', 'as' => 'system.'], function () {
         Route::get('check-status', [\App\Http\Controllers\Api\SystemController::class, 'checkSystemStatus'])->name('check.status'); // 서버 체크
         Route::get('check-notice', [\App\Http\Controllers\Api\SystemController::class, 'checkSystemNotice'])->name('check.notice'); // 서버 공지사항 체크
-//        Route::get('base-data', [SystemController::class, 'baseData'])->name('base.data');
+        Route::get('site-data', [\App\Http\Controllers\Api\SystemController::class, 'getBaseData'])->name('base.data');
     });
 
 

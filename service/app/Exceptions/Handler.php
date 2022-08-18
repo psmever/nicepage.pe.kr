@@ -121,8 +121,7 @@ class Handler extends ExceptionHandler
          * PDOException
          */
         $this->renderable(function (PDOException $e) {
-            $this->messages = __('exception.PDOException');
-            return Response::error(500, __('exception.PDOException'));
+            return Response::error(500, __('default.exception.PDOException'));
         });
 
         /**

@@ -44,4 +44,9 @@ class SystemController extends Controller
 
         return Response::success_no_content();
     }
+
+    public function getBaseData()
+    {
+        return Response::success($this->systemServices->getSiteData());
+    }
 }

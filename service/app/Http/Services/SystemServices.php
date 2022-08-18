@@ -2,6 +2,8 @@
 
 namespace App\Http\Services;
 
+use App\Http\Repositories\CodeRepository;
+use App\Http\Repositories\Interfaces\CodesRepositoryInterface;
 use Illuminate\Http\Request;
 use Storage;
 
@@ -11,12 +13,15 @@ class SystemServices
      * @var Request
      */
     protected Request $currentRequest;
+    protected CodeRepository $codeRepository;
 
     /**
      * @param Request $request
+     * @param CodesRepositoryInterface $codeRepository
      */
-    function __construct(Request $request) {
+    function __construct(Request $request, CodesRepositoryInterface $codeRepository) {
         $this->currentRequest = $request;
+        $this->codeRepository = $codeRepository;
     }
 
     /**
@@ -40,5 +45,14 @@ class SystemServices
         }
 
         return $noticeContents;
+    }
+
+    /**
+     * 공통 데이터.
+     * @return array
+     */
+    public function getSiteData() : array
+    {
+        return [];
     }
 }
