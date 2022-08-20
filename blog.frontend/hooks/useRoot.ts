@@ -1,37 +1,82 @@
 import { useState, useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { appRootAtomState } from '@Recoil/appRootState';
 import { COLORLOG } from '@Utils/Helper';
+import * as SystemService from '@Services/systemService';
+import _ from 'lodash';
+import Swal from 'sweetalert2';
 
 export default function useRoot() {
+	// 체크 상태.
+	const [AppBaseCheckState, setAppBaseCheckState] = useState<boolean>(false);
+	const [ServerFailState, setServerFail] = useState<boolean>(false);
+	const [serverCheck, setServerCheck] = useState<boolean>(false); // 서버 체크 스테이트.
+	const [serverNoticeCheck, setServerNoticeCheck] = useState<boolean>(false); // 서버 체크 스테이트.
 
-    // 체크 상태.
-    const [AppBaseCheckState, setAppBaseCheckState] = useState<boolean>(false);
+	const setAppRootState = useSetRecoilState(appRootAtomState);
 
-    // 최초 로딩시 앱 초기화.
-    useEffect(() => {
-        const appStart = async () => {
-            COLORLOG('info', ':: App Init Start :: ');
-            setAppBaseCheckState(true);
-        };
+	// 최초 로딩시 앱 초기화.
+	useEffect(() => {
+		const appStart = async () => {
+			COLORLOG('warning', ':: App Server Check :: ');
 
-        appStart();
-    }, []);
+			// 기본 서버 체크.
+			const { status } = await SystemService.checkServer();
+			if (!status) {
+				setServerFail(true);
+				return;
+			}
 
-    useEffect(() => {
-        // 로딩이 끝나고 상태가 정상이면.
-        setAppBaseCheckState(false);
-    }, []);
+			setServerCheck(true);
+		};
 
+		COLORLOG('info', ':: App Init Start :: ');
+		appStart();
+	}, []);
 
-    // 임시.
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setAppBaseCheckState(true);
-        }, 1000);
+	// 서버 체크시 정상 일때 서버 공지 사항 확인.
+	useEffect(() => {
+		const funcCheckServerNotice = async () => {
+			COLORLOG('warning', ':: App Server Notice Check :: ');
+			const { payload } = await SystemService.checkServerNotice();
+			if (!_.isEmpty(payload)) {
+				// 서버 공지사항이 있을때.
+				Swal.fire({
+					text: payload.notice_message,
+				});
+			}
 
-        return () => clearInterval(timer);
-    }, []);
+			setServerNoticeCheck(true);
+		};
 
-    return {
-        AppBaseCheckState,
-    };
+		if (serverCheck) {
+			funcCheckServerNotice();
+		}
+	}, [serverCheck]);
+
+	// 서버 공지사항 체크후 사이트 기본 데이터 가지고 오기.
+	useEffect(() => {
+		const funcGetSiteData = async () => {
+			COLORLOG('warning', ':: App Server Get BaseData :: ');
+			const { status, payload } = await SystemService.getSiteBaseData();
+
+			if (status) {
+				setAppRootState({
+					codes: payload.codes,
+				});
+
+				COLORLOG('success', ':: App Init Success :: ');
+				setAppBaseCheckState(true);
+			}
+		};
+
+		if (serverNoticeCheck) {
+			funcGetSiteData();
+		}
+	}, [serverNoticeCheck, setAppRootState]);
+
+	return {
+		AppBaseCheckState,
+		ServerFailState,
+	};
 }
