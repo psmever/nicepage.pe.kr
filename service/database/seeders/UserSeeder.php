@@ -19,6 +19,19 @@ class UserSeeder extends Seeder
     public function run()
     {
         if(env('APP_ENV') !== "production") {
+
+            DB::table('users')->insert([
+                'uuid' => Str::uuid()->toString(),
+                'name' => Str::random(10),
+                'nickname' => Str::random(10),
+                'email' => 'admin@site.com',
+                'password' => Hash::make('1212'),
+                'level' => 'A02999',
+                'email_verified_at' => \Carbon\Carbon::now(),
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            ]);
+
             DB::table('users')->insert([
                 'uuid' => Str::uuid()->toString(),
                 'name' => Str::random(10),

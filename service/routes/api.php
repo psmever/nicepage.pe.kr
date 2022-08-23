@@ -41,5 +41,9 @@ Route::group(['as' => 'api.'], function () {
             Route::get('login-info', [\App\Http\Controllers\Api\v1\AuthController::class, 'loginInfo'])->name('loginInfo')->middleware('auth:api'); # 토큰 사용자 정보.
             Route::post('token-refresh', [\App\Http\Controllers\Api\v1\AuthController::class, 'tokenRefresh'])->name('token.refresh'); # 토큰 새로고침
         });
+
+        Route::group(['prefix' => 'media'], function () {
+            Route::post('{category}/create-image', [\App\Http\Controllers\Api\v1\MediaController::class, 'createImage'])->name('create.image'); # 이미지 등록
+        });
     });
 });

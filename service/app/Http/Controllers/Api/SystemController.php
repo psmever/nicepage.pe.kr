@@ -45,7 +45,11 @@ class SystemController extends Controller
         return Response::success_no_content();
     }
 
-    public function getBaseData()
+    /**
+     * 싸이트 데이터.
+     * @return mixed
+     */
+    public function getBaseData(): mixed
     {
         return Response::success($this->systemServices->getSiteData());
     }

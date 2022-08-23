@@ -105,9 +105,10 @@ class CodesSeeder extends Seeder
                 [ 'code_id' => '010', 'code_name' => '사용' ],
             ],
             'A05' => [
-                [ 'code_id' => '010', 'code_name' => '끄적끄적' ],
-                [ 'code_id' => '020', 'code_name' => '블러그 소개' ],
-                [ 'code_id' => '030', 'code_name' => '주인장은' ],
+                [ 'code_id' => '010', 'code_name' => '블로그 포스트' ],
+                [ 'code_id' => '020', 'code_name' => '끄적끄적' ],
+                [ 'code_id' => '030', 'code_name' => '블러그 소개' ],
+                [ 'code_id' => '040', 'code_name' => '주인장은' ],
             ]
         ];
     }
