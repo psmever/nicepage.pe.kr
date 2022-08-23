@@ -5,6 +5,11 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { mdText } from '@Services/md.sample';
 
+const sanityIoImageLoader = ({ src, width, quality } : {src: string; width:number, quality: number | undefined}) => {
+    return `https://media.nicepage.pe.kr/${src}?w=${width}&q=${quality || 75}`
+  }
+
+
 export const MarkdownView: NextPage = () => {
     return (
         <div className="markdown-body">
@@ -16,10 +21,19 @@ export const MarkdownView: NextPage = () => {
                             return (
                                 <div className="image">
                                     <Image
+                                        // loader={({ src }) => imgLoader({ src })}
+                                        // src={`${image.properties.src}`}
+                                        // alt={image.properties.alt}
+                                        // width="600"
+                                        // height="300"
+
+                                        // loader={sanityIoImageLoader}
+                                        loader={({ src, width, quality }) => sanityIoImageLoader({ src, width, quality })}
                                         src={`${image.properties.src}`}
                                         alt={image.properties.alt}
-                                        width="600"
-                                        height="300"
+                                        width={500}
+                                        height={500}
+                                        quality={100}
                                     />
                                 </div>
                             );
