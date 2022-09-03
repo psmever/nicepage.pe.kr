@@ -28,5 +28,9 @@ return [
         'result_success' => '정상 처리 하였습니다.',
         'error' => '오류가 발생 했습니다.',
         'down' => '서버 점검 중입니다.',
+    ],
+
+    'token' => [
+        'refresh_token' => '토큰 발행중 문제가 발생했습니다.'
     ]
 ];

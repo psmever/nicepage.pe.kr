@@ -1,0 +1,20 @@
+@server-domain = http://localhost:8080
+@front-client-type = 0100010
+
+### 시스템 상태 체크
+GET {{server-domain}}/api/system/check-status HTTP/1.1
+Request-Client-Type : {{front-client-type}}
+Accept : application/json
+Content-Type : application/json
+
+### 시스템 공지사항 체크
+GET {{server-domain}}/api/system/check-notice HTTP/1.1
+Request-Client-Type : {{front-client-type}}
+Accept : application/json
+Content-Type : application/json
+
+### 시스템 사이트 데이터
+GET {{server-domain}}/api/system/site-data HTTP/1.1
+Request-Client-Type : {{front-client-type}}
+Accept : application/json
+Content-Type : application/json

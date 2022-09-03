@@ -13,6 +13,7 @@ return [
         'front_code' => '0100010',
         'ios_code' => '0100020',
         'android_code' => '0100030',
+        'normal_user_level' => 'A02000',
     ],
 
 ];

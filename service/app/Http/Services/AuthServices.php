@@ -127,7 +127,7 @@ class AuthServices
         $tokenRequestResult = json_decode(app()->handle($tokenRequest)->getContent());
 
         if(isset($tokenRequestResult->message) && $tokenRequestResult->message) {
-            throw new ServerErrorException(__('token.required_refresh_token_fail'));
+            throw new ServerErrorException(__('default.token.refresh_token'));
         }
 
         return $tokenRequestResult;

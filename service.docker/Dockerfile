@@ -53,6 +53,7 @@ RUN apt-get install -y \
     php8.1-xml \
     php8.1-gd \
     php8.1-fpm \
+    php8.1-sqlite3 \
     php8.1-mysql
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
