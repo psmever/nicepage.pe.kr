@@ -1,0 +1,56 @@
+@server-domain = http://localhost:8080
+@front-client-type = 0100010
+
+### test default
+POST {{server-domain}}/api/test/default HTTP/1.1
+Request-Client-Type : {{front-client-type}}
+Accept : application/json
+Content-Type : application/json
+
+### 로그인 로컬
+POST {{server-domain}}/api/v1/auth/login HTTP/1.1
+Request-Client-Type : {{front-client-type}}
+Accept : application/json
+Content-Type : application/json
+
+{
+    "email" : "test@test.com",
+    "password" : "1212"
+}
+
+### 로그인 개발
+POST http://psmever.iptime.org:8003/api/v1/auth/login HTTP/1.1
+Request-Client-Type : {{front-client-type}}
+Accept : application/json
+Content-Type : application/json
+
+{
+    "email" : "test@test.com",
+    "password" : "1212"
+}
+
+### 로그아웃
+POST {{server-domain}}/api/v1/auth/logout HTTP/1.1
+Request-Client-Type : {{front-client-type}}
+Accept : application/json
+Content-Type : application/json
+Authorization : Bearer
+
+
+### 토큰리프레시
+POST {{server-domain}}/api/v1/auth/token-refresh HTTP/1.1
+Request-Client-Type : {{front-client-type}}
+Accept : application/json
+Content-Type : application/json
+Authorization : Bearer
+
+{
+    "refresh_token" : ""
+}
+
+### 토큰 테스트
+GET {{server-domain}}/api/v1/auth/login-info HTTP/1.1
+Request-Client-Type : {{front-client-type}}
+Accept : application/json
+Content-Type : application/json
+Authorization : Bearer

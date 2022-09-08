@@ -15,8 +15,8 @@ class MediaController extends Controller
         $this->mediaServices = $mediaServices;
     }
 
-    public function createImage() {
+    public function createImage($category) {
 
-        return Response::success($this->mediaServices->createImage());
+        return Response::success($this->mediaServices->createImage($category));
     }
 }

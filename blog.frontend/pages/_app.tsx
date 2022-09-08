@@ -1,5 +1,6 @@
 import '@Styles/globals.css';
 import '@Styles/GithubMarkdown.css';
+import 'react-toastify/dist/ReactToastify.css';
 import React, { ReactNode, useState } from 'react';
 import type { NextComponentType } from 'next';
 import type { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';

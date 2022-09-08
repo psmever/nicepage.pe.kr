@@ -1,8 +1,11 @@
 import { atom, selector } from 'recoil';
 import * as CommonInterface from '@Types/commonInterface';
 
+/**
+ * app Root
+ */
 export const appRootAtomState = atom<{ codes: CommonInterface.CodesInterface }>({
-	key: 'appRootState',
+	key: `app/appRootState`,
 	default: {
 		codes: {
 			code_name: [],
@@ -17,8 +20,11 @@ export const appRootAtomState = atom<{ codes: CommonInterface.CodesInterface }>(
 	},
 });
 
+/**
+ * app Root
+ */
 export const appRootStateSelector = selector({
-	key: 'appRootStateSelector',
+	key: `app/appRootStateSelector`,
 	get: ({ get }) => {
 		const { codes } = get(appRootAtomState);
 

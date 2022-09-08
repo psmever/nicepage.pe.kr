@@ -24,7 +24,7 @@ class ServiceErrorException extends Exception
      * @param string $errorMessage
      * @param Int $errorCode
      */
-    public function __construct(string $errorMessage, Int $errorCode = 200)
+    public function __construct(string $errorMessage, Int $errorCode = 500)
     {
         parent::__construct($errorMessage, $errorCode);
 

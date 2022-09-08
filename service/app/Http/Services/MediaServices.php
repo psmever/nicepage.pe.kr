@@ -21,7 +21,14 @@ class MediaServices
         $this->currentRequest = $currentRequest;
     }
 
-    public function createImage()
+    /**
+     * 이미지 등록
+     * @param $category
+     * @return string[]
+     * @throws ClientErrorException
+     * @throws ServiceErrorException
+     */
+    public function createImage($category) : array
     {
         $request = $this->currentRequest;
 
@@ -51,33 +58,14 @@ class MediaServices
 
         $uploadFullFileName = Str::uuid() . '.' . $imageExtension;
 
-        Storage::putFileAs('blog/tmp_images/', $request->file('image'), $uploadFullFileName);
+        $targetDirectory = "blog/" . date("Y/m/d");
 
-        $photo = fopen(storage_path('app/blog/tmp_images' . '/' . $uploadFullFileName), 'r');
-
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Client-Token' => env('MEDIA_IMAGE_UPLOAD_TOKEN')
-        ])
-            ->attach('media_file', $photo)
-            ->post(env('MEDIA_UPLOAD_API_URL'), [
-                'media_category' => 'blog',
-            ]);
-
-        Storage::delete('blog/tmp_images/' . $uploadFullFileName);
-
-        if(!$response->successful()) {
-            $result = $response->json();
-            throw new ServiceErrorException($result['message']);
+        if(!Storage::disk('media-server')->putFileAs($targetDirectory, $request->file('image'), $uploadFullFileName)) {
+            throw new ServiceErrorException('처리중 문제가 발생했습니다.');
         }
 
-        $result = json_decode($response->body())->data;
-
-
-
-
-
-        return [];
+        return [
+            'media_url' => env('MEDIA_SERVER_URL') . '/storage/' . $targetDirectory . '/' . $uploadFullFileName,
+        ];
     }
-
 }

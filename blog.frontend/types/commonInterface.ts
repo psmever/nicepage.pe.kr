@@ -18,3 +18,8 @@ export interface CodesInterface {
 		A05: CodeNameItem[];
 	};
 }
+
+export interface FormData {
+	append(name: string, value: any, fileName?: string): void;
+	set(name: string, value: any, fileName?: string): void;
+}

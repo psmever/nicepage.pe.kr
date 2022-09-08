@@ -27,7 +27,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Passport::routes();
+//        Passport::routes();
         Passport::enableImplicitGrant();
 
         if(env('APP_ENV') == 'production') {
