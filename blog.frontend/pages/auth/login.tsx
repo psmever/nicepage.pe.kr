@@ -4,7 +4,7 @@ import type { ReactElement } from 'react';
 import * as authService from '@Services/authService';
 import * as Helper from '@Utils/Helper';
 import { useRouter } from 'next/router';
-import ManageLayout from '@Components/layouts/manage';
+import { ManageLayout } from '@Components/layouts';
 
 const Login: NextLayoutPage = () => {
 	const router = useRouter();

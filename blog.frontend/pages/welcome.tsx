@@ -1,6 +1,6 @@
 import { NextLayoutPage } from 'next';
 import type { ReactElement } from 'react';
-import ManageLayout from '@Components/layouts/manage';
+import { ManageLayout } from '@Components/layouts';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import * as authService from '@Services/authService';
