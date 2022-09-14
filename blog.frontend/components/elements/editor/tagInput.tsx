@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import { TagsInput } from 'react-tag-input-component';
 import { postCurrentAtomState } from '@Recoil/postState';
 
-export const TagInput: NextPage = () => {
+const TagInput: NextPage = () => {
 	const [tags, setTags] = useState(['']);
 	const setPost = useSetRecoilState(postCurrentAtomState);
 
@@ -28,3 +28,5 @@ export const TagInput: NextPage = () => {
 		/>
 	);
 };
+
+export default TagInput;

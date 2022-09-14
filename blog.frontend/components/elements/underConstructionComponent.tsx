@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function UnderConstructionComponent() {
+const UnderConstructionComponent = () => {
 	return (
 		<div className="flex items-center justify-center h-screen bg-gray-200">
 			<div className="container">
@@ -22,3 +22,5 @@ export default function UnderConstructionComponent() {
 		</div>
 	);
 }
+
+export default UnderConstructionComponent;

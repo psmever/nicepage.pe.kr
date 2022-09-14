@@ -1,2 +1,2 @@
-export { default as EditorBox } from './editor/editorBox';
-export { default as PriviewBox } from './editor/priviewBox';
+export { default as SplashComponent } from './SplashComponent';
+export { default as UnderConstructionComponent } from './underConstructionComponent';

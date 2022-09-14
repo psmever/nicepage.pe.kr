@@ -7,7 +7,7 @@ const MDEditor = dynamic<MDEditorProps>(() => import('@uiw/react-md-editor'), {
 	ssr: false,
 });
 
-export const Editor = ({ ...rest }: MDEditorProps) => {
+const Editor = ({ ...rest }: MDEditorProps) => {
 	return (
 		<MDEditor
 			preview="edit"
@@ -18,3 +18,5 @@ export const Editor = ({ ...rest }: MDEditorProps) => {
 		/>
 	);
 };
+
+export default Editor;

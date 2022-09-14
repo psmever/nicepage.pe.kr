@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useRecoilValue } from 'recoil';
-import { MarkdownView } from '@Elements/markdown/markdownView';
+import { MarkdownView } from '@Elements/markdown';
 import { postCurrentStateSelect } from '@Recoil/postState';
 import { isEmpty } from 'lodash';
 

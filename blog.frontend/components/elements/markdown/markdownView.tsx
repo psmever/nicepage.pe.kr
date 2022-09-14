@@ -3,7 +3,6 @@ import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { mdText } from '@Services/md.sample';
 import { useEffect } from 'react';
 
 const sanityIoImageLoader = ({
@@ -18,7 +17,7 @@ const sanityIoImageLoader = ({
 	return `https://media.nicepage.pe.kr/${src}?w=${width}&q=${quality || 75}`;
 };
 
-export const MarkdownView: NextPage<{
+const MarkdownView: NextPage<{
 	Contents: string;
 }> = ({ Contents }) => {
 	useEffect(() => {
@@ -76,3 +75,5 @@ export const MarkdownView: NextPage<{
 		</div>
 	);
 };
+
+export default MarkdownView;

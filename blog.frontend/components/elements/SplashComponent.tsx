@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import useRoot from '@Hooks/useRoot';
 
-export default function SplashComponent({
+const SplashComponent = ({
 	appLoading,
 	serverFail,
 }: {
 	appLoading: () => void;
 	serverFail: () => void;
-}) {
+}) => {
 	const { AppBaseCheckState, ServerFailState } = useRoot();
 
 	useEffect(() => {
@@ -79,3 +79,6 @@ export default function SplashComponent({
 		</div>
 	);
 }
+
+
+export default SplashComponent;
