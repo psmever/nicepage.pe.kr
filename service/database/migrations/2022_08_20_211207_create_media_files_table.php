@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('dest_path')->nullable(false)->comment('저장 디렉토리.');
             $table->string('file_name')->nullable(false)->comment('파일명.');
             $table->string('original_name')->nullable(false)->comment('원본 파일명.');
+            $table->string('height')->nullable(false);
+            $table->string('width')->nullable(false);
             $table->string('file_type', 50)->nullable(false)->comment('원본 파일 타입.');
             $table->bigInteger('file_size')->nullable(false)->comment('파일 용량.');
             $table->string('file_extension', 50)->nullable(false)->comment('파일 확장자.');
