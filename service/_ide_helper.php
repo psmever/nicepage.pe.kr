@@ -17016,7 +17016,18 @@
      
 }
 
-        namespace Spatie\LaravelIgnition\Facades { 
+        namespace App { 
+            /**
+     * 
+     *
+     */ 
+        class ShareClass {
+         
+    }
+     
+}
+
+    namespace Spatie\LaravelIgnition\Facades { 
             /**
      * 
      *
@@ -21271,6 +21282,7 @@ namespace  {
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
             class Vite extends \Illuminate\Support\Facades\Vite {}
+            class ShareClass extends \App\ShareClass {}
             class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}
      
 }

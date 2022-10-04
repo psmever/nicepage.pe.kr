@@ -1770,11 +1770,6 @@ globrex@^0.1.2:
   resolved "https://registry.npmjs.org/globrex/-/globrex-0.1.2.tgz"
   integrity sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==
 
-goober@^2.1.10:
-  version "2.1.10"
-  resolved "https://registry.yarnpkg.com/goober/-/goober-2.1.10.tgz#058def43ba1e3b06f973dbb372a4978aa42f1049"
-  integrity sha512-7PpuQMH10jaTWm33sQgBQvz45pHR8N4l3Cu3WMGEWmHShAcTuuP7I+5/DwKo39fwti5A80WAjvqgz6SSlgWmGA==
-
 graceful-fs@^4.2.4:
   version "4.2.10"
   resolved "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.10.tgz"
@@ -3258,13 +3253,6 @@ react-syntax-highlighter@^15.5.0:
     lowlight "^1.17.0"
     prismjs "^1.27.0"
     refractor "^3.6.0"
-
-react-tag-input-component@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-tag-input-component/-/react-tag-input-component-1.1.1.tgz#21f1c2243a4639f5ee8aed9960ae983564a09acb"
-  integrity sha512-GltRO4e2oq4xG0SZ7bxrZIc8svhWuAVWa1Gi4TaCeIRQe33dh459DOJbUpPoVt6BEZlQmb7g4PI2AG6GiONoWw==
-  dependencies:
-    goober "^2.1.10"
 
 react-toastify@*, react-toastify@^9.0.8:
   version "9.0.8"

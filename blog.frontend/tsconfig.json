@@ -23,7 +23,8 @@
 			"@Services/*": ["services/*"],
 			"@Types/*": ["types/*"],
 			"@Hooks/*": ["hooks/*"],
-			"@Recoil/*": ["recoil/*"]
+			"@Recoil/*": ["recoil/*"],
+			"@Common/*": ["common/*"]
 		},
 		"incremental": true
 	},

@@ -7,7 +7,7 @@ body {
     padding: 0;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
@@ -28,4 +28,44 @@ a {
     /* spacing */
     --rti-tag: "#edf2f7";
     --rti-tag-remove: "#e53e3e";
+}
+
+.TagContainer {
+    display: flex;
+    overflow: scroll;
+    width: 100%;
+    max-width: 100%;
+    padding-left: 14px;
+    border: 1px grey solid;
+    border-radius: 5px;
+    color: black
+}
+
+.TagContainer input {
+    width: 100%;
+    min-width: 50%;
+    border: none;
+    border-radius: 5px;
+    padding: 14px;
+}
+
+.InputTag {
+    display: flex;
+    align-items: center;
+    margin: 7px 10px 7px 0;
+    padding: 0 5px 0 10px;
+    border: 1px solid orange;
+    border-radius: 5px;
+    background-color: orange;
+    white-space: nowrap;
+    color: white;
+}
+
+.InputTag button {
+    display: flex;
+    padding: 6px;
+    border: none;
+    background-color: unset;
+    cursor: pointer;
+    color: white;
 }

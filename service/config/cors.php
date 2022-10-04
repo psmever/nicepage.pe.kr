@@ -25,7 +25,11 @@ return [
 
     'allowed_headers' => ['*'],
 
-    'exposed_headers' => [],
+    'exposed_headers' => [
+        "Access-Control-Allow-Origin" => "*",
+        "Access-Control-Allow-Methods" => "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers" => "X-Requested-With, Content-Type, X-Token-Auth, Authorization",
+    ],
 
     'max_age' => 0,
 

@@ -46,6 +46,8 @@ class MediaFiles extends Model
         'dest_path',
         'file_name',
         'original_name',
+        'width',
+        'height',
         'file_type',
         'file_size',
         'file_extension'

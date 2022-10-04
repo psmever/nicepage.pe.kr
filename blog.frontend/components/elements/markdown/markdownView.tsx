@@ -3,7 +3,6 @@ import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { useEffect } from 'react';
 
 const sanityIoImageLoader = ({
 	src,
@@ -20,9 +19,6 @@ const sanityIoImageLoader = ({
 const MarkdownView: NextPage<{
 	Contents: string;
 }> = ({ Contents }) => {
-	useEffect(() => {
-		console.debug(Contents);
-	}, [Contents]);
 	return (
 		<div className="markdown-body">
 			<ReactMarkdown

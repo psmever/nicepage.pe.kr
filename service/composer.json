@@ -6,13 +6,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "ext-dom": "*",
         "ext-pdo": "*",
         "guzzlehttp/guzzle": "^7.2",
+        "intervention/image": "^2.7",
         "laravel/framework": "^9.2",
         "laravel/passport": "^11.1",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "league/flysystem-sftp-v3": "^3.2",
+        "parsedown/laravel": "^1.2",
         "phpseclib/phpseclib": "^3.0"
     },
     "require-dev": {

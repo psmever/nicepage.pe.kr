@@ -16,6 +16,10 @@ class ApiBeforeMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        return $next($request)
+            ->header("Content-Type", "application/json; charset=UTF-8")
+            ->header("Access-Control-Allow-Origin", "*")
+            ->header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+            ->header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization");
     }
 }

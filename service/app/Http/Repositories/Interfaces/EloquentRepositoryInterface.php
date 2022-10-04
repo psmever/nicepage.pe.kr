@@ -30,7 +30,7 @@ interface EloquentRepositoryInterface
      * @param array $columns
      * @param array $relations
      * @param array $appends
-     * @return Model
+     * @return Model|null
      */
     public function findById(
         int $modelId,
@@ -43,7 +43,7 @@ interface EloquentRepositoryInterface
      * Find trashed model by id.
      *
      * @param int $modelId
-     * @return Model
+     * @return Model|null
      */
     public function findTrashedById(int $modelId): ?Model;
 
@@ -51,7 +51,7 @@ interface EloquentRepositoryInterface
      * Find only trashed model by id.
      *
      * @param int $modelId
-     * @return Model
+     * @return Model|null
      */
     public function findOnlyTrashedById(int $modelId): ?Model;
 
@@ -59,7 +59,7 @@ interface EloquentRepositoryInterface
      * Create a model.
      *
      * @param array $payload
-     * @return Model
+     * @return Model|null
      */
     public function create(array $payload): ?Model;
 
@@ -95,4 +95,13 @@ interface EloquentRepositoryInterface
      * @return bool
      */
     public function permanentlyDeleteById(int $modelId): bool;
+
+    /**
+     * Find only trashed model by id.
+     *
+     * @param string $column
+     * @param string $modelUUID
+     * @return Model|null
+     */
+    public function findOnlyByUUID(string $column, string $modelUUID): ?Model;
 }

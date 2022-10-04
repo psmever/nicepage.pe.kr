@@ -137,4 +137,16 @@ class BaseRepository implements EloquentRepositoryInterface
     {
         return $this->findTrashedById($modelId)->forceDelete();
     }
+
+    /**
+     * Find trashed model by id.
+     *
+     * @param string $column
+     * @param string $modelUUID
+     * @return Model|null
+     */
+    public function findOnlyByUUID(string $column, string $modelUUID): ?Model
+    {
+        return $this->model->where($column, $modelUUID)->firstOrFail();
+    }
 }

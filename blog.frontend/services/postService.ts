@@ -1,5 +1,5 @@
 import _Axios_ from '@Utils/_Axios_';
-import { ServerDefaultResult, FormData } from '@Types/commonInterface';
+import { FormData, ServerDefaultResult } from '@Types/commonInterface';
 
 // 이미지 업로드
 export function imageUpload(payload: FormData): Promise<
@@ -9,3 +9,42 @@ export function imageUpload(payload: FormData): Promise<
 > {
 	return _Axios_({ method: 'post', url: '/api/v1/media/blog/create-image', payload: payload });
 }
+
+// 글 등록
+export const createPost = (payload: {
+	category: string;
+	title: string;
+	tags: string[];
+	contents: string;
+}): Promise<
+	ServerDefaultResult<{
+		post_uuid: string;
+	}>
+> => {
+	return _Axios_({
+		method: 'post',
+		url: `/api/v1/post/${payload.category}/create`,
+		payload: {
+			title: payload.title,
+			tags: payload.tags,
+			contents: payload.contents,
+		},
+	});
+};
+
+// 글 에디트
+export const editPost = (
+	uuid: string
+): Promise<
+	ServerDefaultResult<{
+		title: string;
+		tags: string[];
+		contents: string;
+	}>
+> => {
+	return _Axios_({
+		method: 'get',
+		url: `/api/v1/post/${uuid}/edit`,
+		payload: {},
+	});
+};

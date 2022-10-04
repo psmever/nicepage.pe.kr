@@ -1,23 +1,34 @@
 import { NextPage } from 'next';
-import { useCallback, useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/router';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useWindowResize } from '@Hooks/useWindowResize';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
+import { postCurrentAtomState, postCurrentStateSelect } from '@Recoil/postState';
 import { Editor } from '@Elements/markdown';
 import TagInput from './tagInput';
 import { EditorActionButton } from '@Elements/buttons';
-import { postCurrentAtomState, postCurrentStateSelect } from '@Recoil/postState';
 import { appToastifyAtomState } from '@Recoil/appToastify';
 import { isEmpty } from 'lodash';
-import { imageUpload } from '@Services/postService';
+import { createPost, editPost, imageUpload } from '@Services/postService';
+import Const from '@Common/const.json';
 
 type DraftPageProps = {};
 
 const EditorBox: NextPage<DraftPageProps> = () => {
+	const router = useRouter();
+
+	const [editInfo, setEditorInfo] = useState<{ mode: 'create' | 'update' | null; key: string }>({
+		mode: null,
+		key: '',
+	});
+
 	const setPost = useSetRecoilState(postCurrentAtomState);
 	const setToastify = useSetRecoilState(appToastifyAtomState);
+	const resetPost = useResetRecoilState(postCurrentAtomState);
 	const postValue = useRecoilValue(postCurrentStateSelect);
 
 	const [editorTitle, setEditorTitle] = useState<string>(''); // 제목
+	const [editorTags, setEditorTags] = useState(['']); // 테그
 	const [editorContents, setEditorContents] = useState<string>(''); // 내용
 
 	const [windowWidth, windowHeight] = useWindowResize();
@@ -41,10 +52,57 @@ const EditorBox: NextPage<DraftPageProps> = () => {
 		console.debug(`handleClickCancleButton`);
 	}, []);
 
+	// 리셋 함수
+	const handleResetPostData = async () => {
+		setEditorTitle('');
+		setEditorTags([]);
+		setEditorContents('');
+		resetPost();
+	};
+
+	// 리셋.
+	useEffect(() => {
+		return () => {
+			console.debug('cleanup');
+			resetPost();
+		};
+	}, [resetPost]);
+
 	// 저장 버튼 클릭.
-	const handleClickSaveButton = useCallback(() => {
-		// console.debug(postValue);
-	}, []);
+	const handleClickSaveButton = async () => {
+		if (editInfo.mode === 'create') {
+			// 생성 일때.
+			const response = await createPost({
+				category: editInfo.key,
+				title: postValue.title,
+				tags: postValue.tags.filter((e) => e !== ''),
+				contents: postValue.contents,
+			});
+
+			if (!response.status) {
+				setToastify({
+					status: true,
+					type: 'error',
+					message: isEmpty(response.message)
+						? `처리중 문제가 발생했습니다.`
+						: response.message,
+				});
+
+				return;
+			}
+
+			handleResetPostData().then();
+			await router.push(`/manage/post/${response.payload.post_uuid}/update`);
+			return;
+		}
+
+		if (editInfo.mode === 'update') {
+			// 수정 일때.
+
+			console.debug('update');
+			return;
+		}
+	};
 
 	// 이미지 업로드 처리
 	const handleImageUpload = useCallback(
@@ -56,7 +114,7 @@ const EditorBox: NextPage<DraftPageProps> = () => {
 				formData.append('image', file);
 
 				const response = await imageUpload(formData);
-				if (response.status === false) {
+				if (!response.status) {
 					setToastify({
 						status: true,
 						type: 'error',
@@ -103,6 +161,18 @@ const EditorBox: NextPage<DraftPageProps> = () => {
 		funSetPostTitle();
 	}, [editorTitle, setPost]);
 
+	// 테그 변경 됐을때.
+	useEffect(() => {
+		const funcSetPostTags = () => {
+			setPost((prevState) => ({
+				...prevState,
+				tags: editorTags,
+			}));
+		};
+
+		funcSetPostTags();
+	}, [editorTags, setPost]);
+
 	// 내용 변경 되었을때.
 	useEffect(() => {
 		const funSetPostContents = () => {
@@ -114,6 +184,54 @@ const EditorBox: NextPage<DraftPageProps> = () => {
 
 		funSetPostContents();
 	}, [editorContents, setPost]);
+
+	// 업데이트일때.
+	useEffect(() => {
+		const funcSetUpdate = async () => {
+			// 데이터 가지고 오기.
+			const { key: uuid } = editInfo;
+			const response = await editPost(uuid);
+			if (response.status) {
+				const { title, tags, contents } = response.payload;
+				setEditorTitle(title);
+				setEditorTags(tags);
+				setEditorContents(contents);
+			} else {
+				setToastify({
+					status: true,
+					type: 'error',
+					message: isEmpty(response.message)
+						? `처리중 문제가 발생했습니다.`
+						: response.message,
+				});
+			}
+		};
+
+		if (editInfo.mode === 'update') {
+			funcSetUpdate().then();
+		}
+	}, [editInfo, setToastify]);
+
+	// 최초 로딩.
+	useEffect(() => {
+		const funcSetEditInfo = ({ key, mode }: { key: string; mode: 'create' | 'update' }) => {
+			setEditorInfo({
+				key: key,
+				mode: mode,
+			});
+		};
+
+		const {
+			query: { key, mode },
+		} = router;
+
+		if (mode === 'create' || mode === 'update') {
+			funcSetEditInfo({
+				key: typeof key === 'string' ? key : Const.default.postCreateKey,
+				mode: mode,
+			});
+		}
+	}, [router]);
 
 	return (
 		<div className="flex-1 text-grey-darker text-center bg-grey-light">
@@ -130,7 +248,7 @@ const EditorBox: NextPage<DraftPageProps> = () => {
 				</div>
 
 				<div className="w-full mt-4 grid-cols-12">
-					<TagInput />
+					<TagInput tagsValue={editorTags} setTagValues={setEditorTags} />
 				</div>
 
 				<div className="w-full mt-4 grid-cols-12">

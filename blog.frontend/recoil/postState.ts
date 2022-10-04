@@ -6,7 +6,7 @@ import { atom, selector } from 'recoil';
 export const postCurrentAtomState = atom<{ title: string; tags: string[]; contents: string }>({
 	key: `post/currentState`,
 	default: {
-		title: `제목을 입력해 주세요.`,
+		title: ``,
 		tags: [],
 		contents: ``,
 	},

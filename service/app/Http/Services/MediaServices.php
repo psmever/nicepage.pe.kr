@@ -5,20 +5,32 @@ namespace App\Http\Services;
 use App\Exceptions\ClientErrorException;
 use App\Exceptions\ServiceErrorException;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 use Storage;
 use Validator;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Http;
+use App\Http\Repositories\MediaFilesRepository;
 
 class MediaServices
 {
-    protected Request $currentRequest;
     /**
-     *
+     * @var Request
      */
-    function __construct(Request $currentRequest)
+    protected Request $currentRequest;
+
+    /**
+     * @var MediaFilesRepository
+     */
+    protected MediaFilesRepository $mediaFilesRepository;
+
+    /**
+     * @param Request $currentRequest
+     * @param MediaFilesRepository $mediaFilesRepository
+     */
+    function __construct(Request $currentRequest, MediaFilesRepository $mediaFilesRepository)
     {
         $this->currentRequest = $currentRequest;
+        $this->mediaFilesRepository = $mediaFilesRepository;
     }
 
     /**
@@ -56,6 +68,9 @@ class MediaServices
 
         $imageExtension = $request->image->extension();
 
+        $uploadImage = Image::make($request->file('image'));
+        $getImageSize = getimagesize($uploadImage->basePath());
+
         $uploadFullFileName = Str::uuid() . '.' . $imageExtension;
 
         $targetDirectory = "blog/" . date("Y/m/d");
@@ -64,8 +79,22 @@ class MediaServices
             throw new ServiceErrorException('처리중 문제가 발생했습니다.');
         }
 
+        // TODO : 이미지 리사이징 처리.
+        $this->mediaFilesRepository->create([
+            'dest_path' => '/storage/' . $targetDirectory,
+            'file_name' => $uploadFullFileName,
+            'original_name' => $request->image->getClientOriginalName(),
+            'width' => $uploadImage->width(),
+            'height' => $uploadImage->height(),
+            'file_type' => $getImageSize['mime'],
+            'file_size' => $uploadImage->filesize(),
+            'file_extension' => $request->image->extension()
+        ]);
+
         return [
             'media_url' => env('MEDIA_SERVER_URL') . '/storage/' . $targetDirectory . '/' . $uploadFullFileName,
+            'width' => $uploadImage->width(),
+            'height' => $uploadImage->height(),
         ];
     }
 }
