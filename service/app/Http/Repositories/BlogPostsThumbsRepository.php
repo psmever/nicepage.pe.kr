@@ -27,11 +27,10 @@ class BlogPostsThumbsRepository extends BaseRepository
     /**
      * 삭제 처리.
      * @param Int $postId
-     * @return Model|null
-     * @throws \Throwable
+     * @return bool
      */
-    public function deleteByPostId(Int $postId) : ?Model
+    public function deleteByPostId(Int $postId) : bool
     {
-        return $this->model->where('post_id', $postId)->deleteOrFail();
+        return $this->model->where('post_id', $postId)->delete();
     }
 }

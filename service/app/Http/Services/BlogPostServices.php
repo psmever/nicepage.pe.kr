@@ -2,11 +2,13 @@
 
 namespace App\Http\Services;
 
+use App\Exceptions\ServiceErrorException;
 use App\Http\Repositories\BlogPostsRepository;
 use App\Http\Repositories\BlogPostTagsRepository;
 use App\Http\Repositories\MediaFilesRepository;
 use App\Http\Repositories\BlogPostsThumbsRepository;
 use App\Exceptions\ClientErrorException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Auth;
 use Parsedown;
@@ -60,7 +62,7 @@ class BlogPostServices
     /**
      * @param $category
      * @return array
-     * @throws ClientErrorException
+     * @throws ClientErrorException|ServiceErrorException
      */
     public function create($category) : array
     {
@@ -90,6 +92,15 @@ class BlogPostServices
         $parsedown = new Parsedown();
         $markdownHtmlContents = $parsedown->text($request->input('contents'));
 
+        // 썸네일 확인
+        $thumbnailFileName = ShareClass::getThumbnailInContents($markdownHtmlContents);
+        if($thumbnailFileName) {
+            $taskMediaIndex = $this->mediaFilesRepository->getIndexbyFileName($thumbnailFileName);
+            if(!$taskMediaIndex) {
+                throw new ServiceErrorException('썸네일 이미지가 존재 하지 않습니다.');
+            }
+        }
+
         // 포스트 등록
         $postTask = $this->blogPostsRepository->create([
             'user_id' => $user_id,
@@ -110,15 +121,11 @@ class BlogPostServices
         endforeach;
 
         // 썸네일 등록
-        $thumbnailFileName = ShareClass::getThumbnailInContents($markdownHtmlContents);
-        if($thumbnailFileName) {
-            $taskMediaIndex = $this->mediaFilesRepository->getIndexbyFileName($thumbnailFileName);
-            if($taskMediaIndex) {
-                $this->blogPostsThumbsRepository->create([
-                    'post_id' => $postTask->id,
-                    'media_file_id' => $taskMediaIndex->id
-                ]);
-            }
+        if($thumbnailFileName && $taskMediaIndex) {
+            $this->blogPostsThumbsRepository->create([
+                'post_id' => $postTask->id,
+                'media_file_id' => $taskMediaIndex->id
+            ]);
         }
 
         // 등록 정보.
@@ -142,6 +149,7 @@ class BlogPostServices
 
         $postData = $this->blogPostsRepository->findOnlyByUUID('post_uuid', $uuid);
 
+
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'tags' => 'required|array|min:1',
@@ -163,6 +171,16 @@ class BlogPostServices
         $parsedown = new Parsedown();
         $markdownHtmlContents = $parsedown->text($request->input('contents'));
 
+        // 썸네일 확인
+        $thumbnailFileName = ShareClass::getThumbnailInContents($markdownHtmlContents);
+        if($thumbnailFileName) {
+            $taskMediaIndex = $this->mediaFilesRepository->getIndexbyFileName($thumbnailFileName);
+            if(!$taskMediaIndex) {
+                throw new ServiceErrorException('썸네일 이미지가 존재 하지 않습니다.');
+            }
+        }
+
+        // 슬러그 타이틀 업데이트.
         $slug_title = strcmp($request->input('title'), $postData->title) !== 0 ? $this->blogPostsRepository->getSlugTitle($request->input('title')) : $postData->slug_title;
 
         $this->blogPostsRepository->update($postData->id, [
@@ -172,9 +190,8 @@ class BlogPostServices
             'contents_html' => $markdownHtmlContents,
         ]);
 
-        // 기존 테그 삭제.
-        $this->blogPostTagsRepository->deleteByPostId($postData->id);
         // 테그 추가.
+        $this->blogPostTagsRepository->deleteByPostId($postData->id); // 기존 테그 삭제.
         foreach($request->input('tags') as $element) :
             $this->blogPostTagsRepository->create([
                 'post_id' => $postData->id,
@@ -182,18 +199,13 @@ class BlogPostServices
             ]);
         endforeach;
 
-
-        // 썸네일이미지 변경
-        $thumbnailFileName = ShareClass::getThumbnailInContents($markdownHtmlContents);
-        if($thumbnailFileName) {
-            $taskMediaIndex = $this->mediaFilesRepository->getIndexbyFileName($thumbnailFileName);
-            if($taskMediaIndex) {
-                $this->blogPostsThumbsRepository->deleteByPostId($postData->id);
-                $this->blogPostsThumbsRepository->create([
-                    'post_id' => $postData->id,
-                    'media_file_id' => $taskMediaIndex->id
-                ]);
-            }
+        // 썸네일 등록
+        if($thumbnailFileName && $taskMediaIndex) {
+            $this->blogPostsThumbsRepository->deleteByPostId($postData->id); // 기존 썸네일 삭제.
+            $this->blogPostsThumbsRepository->create([
+                'post_id' => $postData->id,
+                'media_file_id' => $taskMediaIndex->id
+            ]);
         }
 
         $postTask = $this->blogPostsRepository->editbyUUID($uuid);

@@ -29,8 +29,8 @@ class MediaFilesRepository extends BaseRepository
      * @param string $fileName
      * @return Model|null
      */
-    public function getIndexbyFileName(string $fileName): ?Model
+    public function getIndexbyFileName(string $fileName)
     {
-        return $this->model::select('id')->where('file_name', $fileName)->firstOrFail();
+        return $this->model::select('id')->where('file_name', $fileName)->first();
     }
 }
