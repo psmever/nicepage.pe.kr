@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('slug_title')->nullable(false)->unique();
             $table->string('title')->nullable(false);
             $table->longText('contents')->nullable(false);
+            $table->longText('contents_html')->nullable(false);
             $table->enum('post_publish', ['Y', 'N'])->default('N')->comment('게시 유무.');
             $table->enum('post_active', ['Y', 'N'])->default('Y')->comment('글 공개 여부.');
             $table->unsignedBigInteger('view_count')->default(0)->comment('뷰 카운트.');
