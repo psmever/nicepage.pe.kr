@@ -51,7 +51,7 @@ Route::group(['as' => 'api.'], function () {
         Route::group(['prefix' => 'post'], function () {
             Route::post('{category}/create', [\App\Http\Controllers\Api\v1\BlogPostController::class, 'create'])->name('create.post')->middleware('auth:api'); # 글 등록
             Route::put('{uuid}/update', [\App\Http\Controllers\Api\v1\BlogPostController::class, 'update'])->name('update.post')->middleware('auth:api'); # 글 업데이트
-            Route::get('{uuid}/edit', [\App\Http\Controllers\Api\v1\BlogPostController::class, 'edit'])->name('edit.post')->middleware('auth:api'); # 글 에디트
+            Route::get('{uuid}/edit', [\App\Http\Controllers\Api\v1\BlogPostController::class, 'edit'])->name('edit.post'); # 글 에디트
         });
     });
 });
