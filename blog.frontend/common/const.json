@@ -1,5 +1,24 @@
 {
   "default": {
     "postCreateKey": "A05010"
+  },
+  "postCreateKey": [
+    "A05010",
+    "A05020",
+    "A05030",
+    "A05040"
+  ],
+  "editDataInitialize": {
+    "edit": {
+      "title": "",
+      "tags": [
+        ""
+      ],
+      "contents": ""
+    },
+    "info": {
+      "key": "",
+      "mode": ""
+    }
   }
 }
