@@ -18,26 +18,25 @@ module.exports = removeImports({
 			domains: ['http://media.nicepage.pe.kr'],
 		},
 	},
-	exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
-		return {
-			'/': { page: '/' },
-			'/auth/login': { page: '/auth/login' },
-		};
-	},
-	async rewrites() {
-		return [
-			{
-				source: '/auth/login',
-				destination: '/auth/login',
-			},
-			{
-				source: '/manage/post/:key/create',
-				destination: '/manage/post/create/:key',
-			},
-			{
-				source: '/manage/post/:uuid/update',
-				destination: '/manage/post/update/:uuid',
-			},
-		];
-	},
+	// exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
+	// 	return {
+	// 		'/': { page: '/' },
+	// 	};
+	// },
+	// async rewrites() {
+	// 	return [
+	// 		{
+	// 			source: '/auth/login',
+	// 			destination: '/auth/login',
+	// 		},
+	// 		{
+	// 			source: '/manage/post/:key/create',
+	// 			destination: '/manage/post/create/:key',
+	// 		},
+	// 		{
+	// 			source: '/manage/post/:uuid/update',
+	// 			destination: '/manage/post/update/:uuid',
+	// 		},
+	// 	];
+	// },
 });

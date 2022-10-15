@@ -7,8 +7,8 @@
     "build": "rm -rf .next && next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "rm -rf .next && rm -rf out && next build && next export",
-    "export:test": "rm -rf .next && rm -rf out && next build && next export && serve -l 3001 -s out"
+    "export": "rm -rf out && next build && next export",
+    "export:test": "rm -rf out && next build && next export && serve -l 3001 out"
   },
   "dependencies": {
     "@types/lodash": "^4.14.184",

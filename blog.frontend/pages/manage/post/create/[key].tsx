@@ -40,7 +40,7 @@ const Create: NextLayoutPage = () => {
 			return;
 		}
 
-		await router.push(`/manage/post/${response.payload.post_uuid}/update`);
+		await router.push(`/manage/post/update/${response.payload.post_uuid}`);
 	};
 
 	useEffect(() => {

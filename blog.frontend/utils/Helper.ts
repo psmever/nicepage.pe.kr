@@ -42,10 +42,12 @@ export const COLORLOG = (
  */
 export const storageManager = {
 	set: (key: string, object: any) => {
+		if (typeof window === 'undefined') return;
 		if (!localStorage) return;
 		localStorage[key] = typeof object === 'string' ? object : JSON.stringify(object);
 	},
 	get: (key: string) => {
+		if (typeof window === 'undefined') return;
 		if (!localStorage) return null;
 
 		if (!localStorage[key]) {
@@ -59,6 +61,7 @@ export const storageManager = {
 		}
 	},
 	remove: (key: string) => {
+		if (typeof window === 'undefined') return;
 		if (!localStorage) return null;
 
 		if (localStorage[key]) {
