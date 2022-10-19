@@ -18,7 +18,7 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = (
 	const getLayout = Component.getLayout || ((page: ReactNode) => page);
 
 	const handleAppLoading = () => {
-		if (AppLoading === false) {
+		if (!AppLoading) {
 			setAppLoading(true);
 		} else {
 			setAppLoading(false);

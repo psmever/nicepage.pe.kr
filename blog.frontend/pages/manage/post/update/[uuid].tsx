@@ -1,54 +1,82 @@
 import type { ReactElement } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ManageLayout } from '@Components/layouts';
 import { EditorBox, PriviewBox } from '@Components/elements/editor';
 import { useRouter } from 'next/router';
-import { useResetRecoilState, useSetRecoilState } from 'recoil';
-import { postCurrentAtomState } from '@Recoil/postState';
-import { appToastifyAtomState } from '@Recoil/appToastify';
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
+import { atomPostState, selectPostState } from '@Recoil/manageState';
+import { atomAppToastifyState } from '@Recoil/appToastify';
 import Const from '@Common/const.json';
-import { editPost } from '@Services/postService';
+import { editPost, updatePost } from '@Services/postService';
+import { PostCategory } from '@Types/commonInterface';
+import { isEmpty } from 'lodash';
 
 const Update: any = ({
 	postData,
 }: {
 	postData: {
 		title: string;
+		category: PostCategory;
 		tags: string[];
 		contents: string;
 	};
 }) => {
 	const router = useRouter();
-	const setPost = useSetRecoilState(postCurrentAtomState);
-	const setToastify = useSetRecoilState(appToastifyAtomState);
-	const resetPost = useResetRecoilState(postCurrentAtomState);
+	const setPost = useSetRecoilState(atomPostState);
+	const recoilPostData = useRecoilValue(selectPostState);
+	const resetPost = useResetRecoilState(atomPostState);
+	const setToastify = useSetRecoilState(atomAppToastifyState);
 
-	const [editorInfo, setEditorInfo] = useState<{ uuid: string; mode: `create` | `update` | `` }>({
-		uuid: ``,
-		mode: ``,
-	});
-
+	// 내용 업데이트 처리.
 	const postSave = async () => {
-		console.debug('postSave');
+		const response = await updatePost({
+			uuid: recoilPostData.uuid,
+			payload: recoilPostData.currentData,
+		});
+
+		if (!response.status) {
+			setToastify({
+				status: true,
+				type: 'error',
+				message: isEmpty(response.message)
+					? `처리중 문제가 발생했습니다.`
+					: response.message,
+			});
+
+			return;
+		}
+
+		setToastify({
+			status: true,
+			type: 'success',
+			message: isEmpty(response.message) ? `저장하였습니다.` : response.message,
+		});
+
+		await resetPost();
+		await router.push(`/manage/post/update/${recoilPostData.uuid}`);
 	};
 
+	// 로딩시 에디트 데이터 설정.
 	useEffect(() => {
 		const funcSetEditInfo = (uuid: string) => {
-			setEditorInfo({
+			setPost((prev) => ({
+				...prev,
+				mode: 'update',
+				category: postData.category,
 				uuid: uuid,
-				mode: `update`,
-			});
+				getData: {
+					title: postData.title,
+					tags: postData.tags,
+					contents: postData.contents,
+				},
+			}));
 		};
 
 		const {
 			query: { uuid },
 		} = router;
-		funcSetEditInfo(typeof uuid === 'string' ? uuid : Const.default.postCreateKey);
-	}, [router]);
-
-	useEffect(() => {
-		setPost(postData);
-	}, [postData, setPost]);
+		funcSetEditInfo(typeof uuid === 'string' ? uuid : Const.default.postCreateCategory);
+	}, [postData, router, setPost]);
 
 	return (
 		<div className="flex items-stretch bg-grey-lighter w-full min-h-screen">
@@ -57,14 +85,6 @@ const Update: any = ({
 		</div>
 	);
 };
-
-// export const getInitialProps = async (context) => {
-// 	const { uuid } = context.params as IParams;
-// 	const response = await editPost(uuid);
-// 	return {
-// 		props: { postData: response.payload }, // will be passed to the page component as props
-// 	};
-// };
 
 Update.getInitialProps = async ({ query }: any) => {
 	const { uuid } = query;

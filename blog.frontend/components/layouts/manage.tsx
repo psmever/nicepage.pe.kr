@@ -1,14 +1,15 @@
 import type { LayoutProps } from 'types/pageWithLayouts';
 import { ReactElement, useEffect } from 'react';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { appToastifyAtomState } from '@Recoil/appToastify';
+import { atomAppToastifyState } from '@Recoil/appToastify';
 import Head from 'next/head';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 const ManageLayout: LayoutProps = ({ children }: { children: ReactElement }) => {
-	const currentToastify = useRecoilValue(appToastifyAtomState);
-	const resetToastify = useResetRecoilState(appToastifyAtomState);
+	const currentToastify = useRecoilValue(atomAppToastifyState);
+	const resetToastify = useResetRecoilState(atomAppToastifyState);
 
+	// 공통 알럿.
 	useEffect(() => {
 		const funcSetToastify = () => {
 			if (currentToastify.type === 'error') {

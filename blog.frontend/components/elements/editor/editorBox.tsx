@@ -6,19 +6,19 @@ import { Editor } from '@Elements/markdown';
 import TagInput from './tagInput';
 import Const from '@Common/const.json';
 import { imageUpload } from '@Services/postService';
-import { useSetRecoilState } from 'recoil';
-import { appToastifyAtomState } from '@Recoil/appToastify';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { atomAppToastifyState } from '@Recoil/appToastify';
 import { EditorActionButton } from '@Elements/buttons';
-import { postCurrentAtomState } from '@Recoil/postState';
+import { atomPostState, selectPostState } from '@Recoil/manageState';
 
 interface DraftPageProps {
 	postSave: () => void;
 }
 
 const EditorBox: NextPage<DraftPageProps> = ({ postSave }) => {
-	const setToastify = useSetRecoilState(appToastifyAtomState);
-	const setPost = useSetRecoilState(postCurrentAtomState);
-	// const resetPost = useResetRecoilState(postCurrentAtomState);
+	const setToastify = useSetRecoilState(atomAppToastifyState);
+	const setPost = useSetRecoilState(atomPostState);
+	const recoilPostData = useRecoilValue(selectPostState);
 
 	const [editData, setEditData] = useState<{
 		edit: {
@@ -130,8 +130,25 @@ const EditorBox: NextPage<DraftPageProps> = ({ postSave }) => {
 
 	// 에디터 내용변경시 recoil 에 저장.
 	useEffect(() => {
-		setPost(editData.edit);
-	}, [editData.edit, setPost]);
+		setPost((prev) => ({
+			...prev,
+			currentData: editData.edit,
+		}));
+	}, [editData, setPost]);
+
+	useEffect(() => {
+		const funcSetGetData = () => {
+			setEditData((prevState) => ({
+				...prevState,
+				edit: recoilPostData.getData,
+			}));
+			setEditorTags(recoilPostData.getData.tags);
+		};
+
+		if (recoilPostData.mode === 'update') {
+			funcSetGetData();
+		}
+	}, [recoilPostData.getData, recoilPostData.mode]);
 
 	return (
 		<div className="flex-1 text-grey-darker text-center bg-grey-light">

@@ -1,15 +1,14 @@
 import { atom, selector } from 'recoil';
-import * as CommonInterface from '@Types/commonInterface';
 
 /**
  * app Root
  */
-export const appToastifyAtomState = atom<{
+export const atomAppToastifyState = atom<{
 	status: boolean;
 	type: 'success' | 'error' | 'info';
 	message: string;
 }>({
-	key: `app/ToastifyState`,
+	key: `app/toastifyState`,
 	default: {
 		status: false,
 		type: 'success',
@@ -20,10 +19,10 @@ export const appToastifyAtomState = atom<{
 /**
  * app Root
  */
-export const appToastifyStateSelector = selector({
-	key: `app/ToastifyStateSelector`,
+export const selectAppToastifyState = selector({
+	key: `app/toastifyStateSelect`,
 	get: ({ get }) => {
-		const { status, message } = get(appToastifyAtomState);
+		const { status, message } = get(atomAppToastifyState);
 
 		return {
 			status,

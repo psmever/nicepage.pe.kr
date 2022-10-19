@@ -1,31 +1,40 @@
 import { NextLayoutPage } from 'next';
 import type { ReactElement } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ManageLayout } from '@Components/layouts';
 import { EditorBox, PriviewBox } from '@Components/elements/editor';
 import { useRouter } from 'next/router';
 import Const from '@Common/const.json';
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
-import { postCurrentAtomState } from '@Recoil/postState';
-import { appToastifyAtomState } from '@Recoil/appToastify';
+import { atomPostState } from '@Recoil/manageState';
+import { atomAppToastifyState } from '@Recoil/appToastify';
 import { createPost } from '@Services/postService';
 import { isEmpty } from 'lodash';
+import { PostCategory } from '@Types/commonInterface';
 
 const Create: NextLayoutPage = () => {
 	const router = useRouter();
-	const [post, setPost] = useRecoilState(postCurrentAtomState);
-	const setToastify = useSetRecoilState(appToastifyAtomState);
-	const resetPost = useResetRecoilState(postCurrentAtomState);
+	const [postData, setPostData] = useRecoilState(atomPostState);
+	const setToastify = useSetRecoilState(atomAppToastifyState);
+	const resetPost = useResetRecoilState(atomPostState);
 
-	const [editKey, setRditKey] = useState<string>(Const.default.postCreateKey);
-
+	// 글 수정
 	const postSave = async () => {
-		// 생성 일때.
+		if (isEmpty(postData.category)) {
+			setToastify({
+				status: true,
+				type: 'error',
+				message: `포스트 코드가 존재 하지 않습니다.`,
+			});
+
+			return;
+		}
+		const { title, tags, contents } = postData.currentData;
 		const response = await createPost({
-			category: editKey,
-			title: post.title,
-			tags: post.tags.filter((e) => e !== ''),
-			contents: post.contents,
+			category: postData.category,
+			title: title,
+			tags: tags.filter((e) => e !== ''),
+			contents: contents,
 		});
 
 		if (!response.status) {
@@ -40,19 +49,29 @@ const Create: NextLayoutPage = () => {
 			return;
 		}
 
+		await resetPost();
 		await router.push(`/manage/post/update/${response.payload.post_uuid}`);
 	};
 
+	// 로딩시 에디터 정보 설정.
 	useEffect(() => {
-		const funcSetEditInfo = (key: string) => {
-			setRditKey(key);
+		const funcSetEditInfo = (category: PostCategory) => {
+			if (!Const.postCreateCategory.find((e) => e === category)) {
+				return;
+			}
+
+			setPostData((prev) => ({
+				...prev,
+				category: category,
+				mode: 'create',
+			}));
 		};
 
 		const {
-			query: { key },
+			query: { category },
 		} = router;
-		funcSetEditInfo(typeof key === 'string' ? key : Const.default.postCreateKey);
-	}, [router]);
+		funcSetEditInfo(category as PostCategory);
+	}, [router, setPostData]);
 
 	return (
 		<div className="flex items-stretch bg-grey-lighter w-full min-h-screen">
@@ -62,10 +81,10 @@ const Create: NextLayoutPage = () => {
 	);
 };
 
-// static path 설정?
+// static path 설정
 export const getStaticPaths = async () => {
-	const postKeys = Const.postCreateKey;
-	const pathsWithParams = postKeys.map((el) => ({ params: { key: el } }));
+	const postKeys = Const.postCreateCategory;
+	const pathsWithParams = postKeys.map((el) => ({ params: { category: el } }));
 
 	return {
 		paths: pathsWithParams,

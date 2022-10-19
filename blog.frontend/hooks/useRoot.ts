@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { appRootAtomState } from '@Recoil/appRootState';
+import { atomAppRootState } from '@Recoil/appRootState';
 import { COLORLOG } from '@Utils/Helper';
 import * as SystemService from '@Services/systemService';
 import _ from 'lodash';
@@ -13,7 +13,7 @@ export default function useRoot() {
 	const [serverCheck, setServerCheck] = useState<boolean>(false); // 서버 체크 스테이트.
 	const [serverNoticeCheck, setServerNoticeCheck] = useState<boolean>(false); // 서버 체크 스테이트.
 
-	const setAppRootState = useSetRecoilState(appRootAtomState);
+	const setAppRootState = useSetRecoilState(atomAppRootState);
 
 	// 최초 로딩시 앱 초기화.
 	useEffect(() => {
@@ -31,7 +31,7 @@ export default function useRoot() {
 		};
 
 		COLORLOG('info', ':: App Init Start :: ');
-		appStart();
+		appStart().then();
 	}, []);
 
 	// 서버 체크시 정상 일때 서버 공지 사항 확인.
@@ -41,7 +41,7 @@ export default function useRoot() {
 			const { payload } = await SystemService.checkServerNotice();
 			if (!_.isEmpty(payload)) {
 				// 서버 공지사항이 있을때.
-				Swal.fire({
+				await Swal.fire({
 					text: payload.notice_message,
 				});
 			}
@@ -50,7 +50,7 @@ export default function useRoot() {
 		};
 
 		if (serverCheck) {
-			funcCheckServerNotice();
+			funcCheckServerNotice().then();
 		}
 	}, [serverCheck]);
 
@@ -71,7 +71,7 @@ export default function useRoot() {
 		};
 
 		if (serverNoticeCheck) {
-			funcGetSiteData();
+			funcGetSiteData().then();
 		}
 	}, [serverNoticeCheck, setAppRootState]);
 

@@ -1,22 +1,28 @@
 import { NextPage } from 'next';
 import { useRecoilValue } from 'recoil';
 import { MarkdownView } from '@Elements/markdown';
-import { postCurrentStateSelect } from '@Recoil/postState';
+import { selectPostState } from '@Recoil/manageState';
 import { isEmpty } from 'lodash';
 
 const PriviewBox: NextPage = () => {
-	const currentPost = useRecoilValue(postCurrentStateSelect);
+	const currentPost = useRecoilValue(selectPostState);
 	return (
 		<div className="flex-1 text-grey-darker bg-grey-light">
 			<div className="h-screen p-4">
 				<div className="w-full grid-cols-12">
 					<p className="text-5xl font-black text-gray-900 m-4">
-						{isEmpty(currentPost.title) ? `제목을 입력해 주세요.` : currentPost.title}
+						{isEmpty(currentPost.currentData.title)
+							? `제목을 입력해 주세요.`
+							: currentPost.currentData.title}
 					</p>
 				</div>
 				<div className="w-full grid-cols-12 mt-12">
 					<MarkdownView
-						Contents={isEmpty(currentPost.contents) ? `` : currentPost.contents}
+						Contents={
+							isEmpty(currentPost.currentData.contents)
+								? ``
+								: currentPost.currentData.contents
+						}
 					/>
 				</div>
 			</div>

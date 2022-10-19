@@ -1,8 +1,8 @@
 {
   "default": {
-    "postCreateKey": "A05010"
+    "postCreateCategory": "A05010"
   },
-  "postCreateKey": [
+  "postCreateCategory": [
     "A05010",
     "A05020",
     "A05030",

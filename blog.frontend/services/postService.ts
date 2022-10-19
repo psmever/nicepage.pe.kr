@@ -1,5 +1,5 @@
 import _Axios_ from '@Utils/_Axios_';
-import { FormData, ServerDefaultResult } from '@Types/commonInterface';
+import { FormData, PostCategory, ServerDefaultResult } from '@Types/commonInterface';
 
 // 이미지 업로드
 export function imageUpload(payload: FormData): Promise<
@@ -38,6 +38,7 @@ export const editPost = (
 ): Promise<
 	ServerDefaultResult<{
 		title: string;
+		category: PostCategory;
 		tags: string[];
 		contents: string;
 	}>
@@ -46,5 +47,31 @@ export const editPost = (
 		method: 'get',
 		url: `/api/v1/post/${uuid}/edit`,
 		payload: {},
+	});
+};
+
+// 글 수정
+export const updatePost = ({
+	uuid,
+	payload,
+}: {
+	uuid: string;
+	payload: {
+		title: string;
+		tags: string[];
+		contents: string;
+	};
+}): Promise<
+	ServerDefaultResult<{
+		title: string;
+		category: PostCategory;
+		tags: string[];
+		contents: string;
+	}>
+> => {
+	return _Axios_({
+		method: 'put',
+		url: `/api/v1/post/${uuid}/update`,
+		payload: payload,
 	});
 };
