@@ -211,6 +211,7 @@ class BlogPostServices
         $postTask = $this->blogPostsRepository->editbyUUID($uuid);
         return [
             'title' => $postTask->title,
+            'category' => $postTask->category,
             'tags' => array_map(function($e){
                 return $e['tag'];
             }, $postTask->tags->toarray()),
@@ -228,6 +229,7 @@ class BlogPostServices
         $postTask = $this->blogPostsRepository->editbyUUID($uuid);
         return [
             'title' => $postTask->title,
+            'category' => $postTask->category,
             'tags' => array_map(function($e){
                 return $e['tag'];
             }, $postTask->tags->toarray()),
