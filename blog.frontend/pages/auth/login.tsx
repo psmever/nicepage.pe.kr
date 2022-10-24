@@ -1,6 +1,6 @@
 import { NextLayoutPage } from 'next';
-import { KeyboardEvent, useRef, useState } from 'react';
 import type { ReactElement } from 'react';
+import { KeyboardEvent, useRef, useState } from 'react';
 import * as authService from '@Services/authService';
 import * as Helper from '@Utils/Helper';
 import { useRouter } from 'next/router';
