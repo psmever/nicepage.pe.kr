@@ -10,6 +10,21 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { atomAppToastifyState } from '@Recoil/appToastify';
 import { EditorActionButton } from '@Elements/buttons';
 import { atomPostState, selectPostState } from '@Recoil/manageState';
+import {
+	EditorBoxContainer,
+	EditorBoxDropZoneBox,
+	EditorBoxDropZoneButtonBox,
+	EditorBoxDropZoneInput,
+	EditorBoxDropZoneLabel,
+	EditorBoxDropZoneTitleBox,
+	EditorBoxDropZoneTitleP,
+	EditorBoxDropZoneTitleSpan,
+	EditorBoxEditorBox,
+	EditorBoxTagBox,
+	EditorBoxTitleBox,
+	EditorBoxTitleInput,
+	EditorBoxWapper,
+} from '@Styles/elements/elements';
 
 interface DraftPageProps {
 	postSave: () => void;
@@ -151,42 +166,40 @@ const EditorBox: NextPage<DraftPageProps> = ({ postSave }) => {
 	}, [recoilPostData.getData, recoilPostData.mode]);
 
 	return (
-		<div className="flex-1 text-grey-darker text-center bg-grey-light">
-			<div className="h-screen p-4">
-				<div className="m-4">
-					<input
+		<EditorBoxContainer>
+			<EditorBoxWapper>
+				<EditorBoxTitleBox>
+					<EditorBoxTitleInput
 						type="text"
 						name="title"
-						className="block w-full rounded-lg sm:text-md border-none focus:outline-none text-4xl"
 						placeholder="제목을 입력해 주세요"
 						onChange={(e) => handleChangeTitle(e.target.value)}
 						value={editData.edit.title}
 					/>
-				</div>
+				</EditorBoxTitleBox>
 
-				<div className="w-full mt-4 grid-cols-12">
+				<EditorBoxTagBox>
 					<TagInput tagsValue={editData.edit.tags} setTagValues={setEditorTags} />
-				</div>
+				</EditorBoxTagBox>
 
-				<div className="w-full mt-4 grid-cols-12">
+				<EditorBoxEditorBox>
 					<Editor
 						value={editData.edit.contents}
 						onChange={(text) => handleChangeContents(text)}
 						height={editorHeight}
 						hideToolbar={true}
 					/>
-					<div className="flex justify-center items-center w-full">
-						<label
-							htmlFor="dropzone-file"
-							className="flex flex-col justify-center items-center w-full border-2"
-						>
-							<div className="flex flex-col justify-center items-center pt-2 pb-2">
-								<p className="text-sm">
-									<span className="font-semibold">Click to upload</span> or drag
-									and drop
-								</p>
-							</div>
-							<input
+					<EditorBoxDropZoneBox>
+						<EditorBoxDropZoneLabel htmlFor="dropzone-file">
+							<EditorBoxDropZoneTitleBox>
+								<EditorBoxDropZoneTitleP>
+									<EditorBoxDropZoneTitleSpan className="font-semibold">
+										Click to upload
+									</EditorBoxDropZoneTitleSpan>{' '}
+									or drag and drop
+								</EditorBoxDropZoneTitleP>
+							</EditorBoxDropZoneTitleBox>
+							<EditorBoxDropZoneInput
 								id="dropzone-file"
 								type="file"
 								className="hidden"
@@ -196,11 +209,11 @@ const EditorBox: NextPage<DraftPageProps> = ({ postSave }) => {
 								ref={imageInputRef}
 								onClick={handleFileInputReset}
 							/>
-						</label>
-					</div>
-				</div>
+						</EditorBoxDropZoneLabel>
+					</EditorBoxDropZoneBox>
+				</EditorBoxEditorBox>
 
-				<div className="flex justify-start mt-2">
+				<EditorBoxDropZoneButtonBox>
 					<EditorActionButton
 						buttonName={`나가기`}
 						onClickHandler={() => handleClickCancleButton()}
@@ -209,9 +222,9 @@ const EditorBox: NextPage<DraftPageProps> = ({ postSave }) => {
 						buttonName={`저장`}
 						onClickHandler={() => handleClickSaveButton()}
 					/>
-				</div>
-			</div>
-		</div>
+				</EditorBoxDropZoneButtonBox>
+			</EditorBoxWapper>
+		</EditorBoxContainer>
 	);
 };
 

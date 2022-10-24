@@ -1,26 +1,37 @@
 import React from 'react';
+import {
+	UnderConstructionComingSoon,
+	UnderConstructionContainer,
+	UnderConstructionMainContainer,
+	UnderConstructionMainLink,
+	UnderConstructionMainTextBox,
+	UnderConstructionTextBox,
+	UnderConstructionTextSpan,
+	UnderConstructionTextTitle,
+	UnderConstructionWapper,
+} from '@Styles/elements/elements';
 
 const UnderConstructionComponent = () => {
 	return (
-		<div className="flex items-center justify-center h-screen bg-gray-200">
-			<div className="container">
-				<div className="bg-white rounded-lg shadow-lg p-5 md:p-20 mx-2">
-					<div className="text-center">
-						<h2 className="text-4xl tracking-tight leading-10 font-extrabold text-gray-900 sm:text-5xl sm:leading-none md:text-6xl">
-							서버<span className="text-indigo-600">작업중</span>
-						</h2>
-						<h3 className="text-xl md:text-3xl mt-10">Coming Soon</h3>
-						<p className="text-md md:text-xl mt-10">
-							<a className="hover:underline" href="https://www.quicktoolz.com">
+		<UnderConstructionMainContainer>
+			<UnderConstructionContainer>
+				<UnderConstructionWapper>
+					<UnderConstructionTextBox>
+						<UnderConstructionTextTitle>
+							서버<UnderConstructionTextSpan>작업중</UnderConstructionTextSpan>
+						</UnderConstructionTextTitle>
+						<UnderConstructionComingSoon>Coming Soon</UnderConstructionComingSoon>
+						<UnderConstructionMainTextBox>
+							<UnderConstructionMainLink href="https://nicepage.pe.kr">
 								nicepage.pe.kr
-							</a>
+							</UnderConstructionMainLink>
 							서버 작업 중입니다. 다시 시도해 주세요.
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
+						</UnderConstructionMainTextBox>
+					</UnderConstructionTextBox>
+				</UnderConstructionWapper>
+			</UnderConstructionContainer>
+		</UnderConstructionMainContainer>
 	);
-}
+};
 
 export default UnderConstructionComponent;
