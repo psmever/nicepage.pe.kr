@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import useRoot from '@Hooks/useRoot';
-import { LoadingText, SplashContainer, SplashWapoper } from '@Styles/elements/elements';
+import { Splash } from '@Styles/elements/elements';
+
+const { LoadingText, Container, Wapoper } = Splash;
 
 const SplashComponent = ({
 	appLoading,
@@ -13,7 +15,7 @@ const SplashComponent = ({
 
 	useEffect(() => {
 		const setAppMainLoading = (loading: boolean) => {
-			if (loading === true) {
+			if (loading) {
 				appLoading();
 			}
 		};
@@ -33,8 +35,8 @@ const SplashComponent = ({
 	}, [ServerFailState, serverFail]);
 
 	return (
-		<SplashContainer>
-			<SplashWapoper>
+		<Container>
+			<Wapoper>
 				<svg
 					fill="none"
 					className="w-6 h-6 animate-spin"
@@ -50,8 +52,8 @@ const SplashComponent = ({
 				</svg>
 
 				<LoadingText>로딩중 ...</LoadingText>
-			</SplashWapoper>
-		</SplashContainer>
+			</Wapoper>
+		</Container>
 	);
 };
 

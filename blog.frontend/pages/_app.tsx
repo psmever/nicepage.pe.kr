@@ -1,3 +1,4 @@
+import '@nextcss/reset';
 import '@Styles/globals.css';
 import '@Styles/GithubMarkdown.css';
 import 'react-toastify/dist/ReactToastify.css';

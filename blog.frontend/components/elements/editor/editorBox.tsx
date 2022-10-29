@@ -10,21 +10,23 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { atomAppToastifyState } from '@Recoil/appToastify';
 import { EditorActionButton } from '@Elements/buttons';
 import { atomPostState, selectPostState } from '@Recoil/manageState';
-import {
-	EditorBoxContainer,
-	EditorBoxDropZoneBox,
-	EditorBoxDropZoneButtonBox,
-	EditorBoxDropZoneInput,
-	EditorBoxDropZoneLabel,
-	EditorBoxDropZoneTitleBox,
-	EditorBoxDropZoneTitleP,
-	EditorBoxDropZoneTitleSpan,
-	EditorBoxEditorBox,
-	EditorBoxTagBox,
-	EditorBoxTitleBox,
-	EditorBoxTitleInput,
+import { EditorBoxStyle } from '@Styles/elements/elements';
+
+const {
+	Container,
+	Wapper,
+	DropZoneBox,
+	DropZoneButtonBox,
+	DropZoneInput,
+	DropZoneLabel,
+	DropZoneTitleBox,
+	DropZoneTitleP,
+	DropZoneTitleSpan,
 	EditorBoxWapper,
-} from '@Styles/elements/elements';
+	TagBox,
+	TitleBox,
+	TitleInput,
+} = EditorBoxStyle;
 
 interface DraftPageProps {
 	postSave: () => void;
@@ -166,54 +168,54 @@ const EditorBox: NextPage<DraftPageProps> = ({ postSave }) => {
 	}, [recoilPostData.getData, recoilPostData.mode]);
 
 	return (
-		<EditorBoxContainer>
-			<EditorBoxWapper>
-				<EditorBoxTitleBox>
-					<EditorBoxTitleInput
+		<Container>
+			<Wapper>
+				<TitleBox>
+					<TitleInput
 						type="text"
 						name="title"
 						placeholder="제목을 입력해 주세요"
 						onChange={(e) => handleChangeTitle(e.target.value)}
 						value={editData.edit.title}
 					/>
-				</EditorBoxTitleBox>
+				</TitleBox>
 
-				<EditorBoxTagBox>
+				<TagBox>
 					<TagInput tagsValue={editData.edit.tags} setTagValues={setEditorTags} />
-				</EditorBoxTagBox>
+				</TagBox>
 
-				<EditorBoxEditorBox>
+				<EditorBoxWapper>
 					<Editor
 						value={editData.edit.contents}
 						onChange={(text) => handleChangeContents(text)}
 						height={editorHeight}
 						hideToolbar={true}
 					/>
-					<EditorBoxDropZoneBox>
-						<EditorBoxDropZoneLabel htmlFor="dropzone-file">
-							<EditorBoxDropZoneTitleBox>
-								<EditorBoxDropZoneTitleP>
-									<EditorBoxDropZoneTitleSpan className="font-semibold">
+					<DropZoneBox>
+						<DropZoneLabel htmlFor="dropzone-file">
+							<DropZoneTitleBox>
+								<DropZoneTitleP>
+									<DropZoneTitleSpan className="font-semibold">
 										Click to upload
-									</EditorBoxDropZoneTitleSpan>{' '}
+									</DropZoneTitleSpan>{' '}
 									or drag and drop
-								</EditorBoxDropZoneTitleP>
-							</EditorBoxDropZoneTitleBox>
-							<EditorBoxDropZoneInput
+								</DropZoneTitleP>
+							</DropZoneTitleBox>
+							<DropZoneInput
 								id="dropzone-file"
 								type="file"
 								className="hidden"
-								accept="image/jpg,impge/png,image/jpeg,image/gif"
+								accept="image/jpg,image/png,image/jpeg,image/gif"
 								name="postImage"
 								onChange={(e) => handleImageUpload(e)}
 								ref={imageInputRef}
 								onClick={handleFileInputReset}
 							/>
-						</EditorBoxDropZoneLabel>
-					</EditorBoxDropZoneBox>
-				</EditorBoxEditorBox>
+						</DropZoneLabel>
+					</DropZoneBox>
+				</EditorBoxWapper>
 
-				<EditorBoxDropZoneButtonBox>
+				<DropZoneButtonBox>
 					<EditorActionButton
 						buttonName={`나가기`}
 						onClickHandler={() => handleClickCancleButton()}
@@ -222,9 +224,9 @@ const EditorBox: NextPage<DraftPageProps> = ({ postSave }) => {
 						buttonName={`저장`}
 						onClickHandler={() => handleClickSaveButton()}
 					/>
-				</EditorBoxDropZoneButtonBox>
-			</EditorBoxWapper>
-		</EditorBoxContainer>
+				</DropZoneButtonBox>
+			</Wapper>
+		</Container>
 	);
 };
 

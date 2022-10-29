@@ -677,6 +677,11 @@
   resolved "https://registry.yarnpkg.com/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-12.2.2.tgz#7460be700a60d75816f01109400b51fe929d7e89"
   integrity sha512-2D2iinWUL6xx8D9LYVZ5qi7FP6uLAoWymt8m8aaG2Ld/Ka8/k723fJfiklfuAcwOxfufPJI+nRbT5VcgHGzHAQ==
 
+"@nextcss/reset@^0.2.2-beta":
+  version "0.2.2-beta"
+  resolved "https://registry.yarnpkg.com/@nextcss/reset/-/reset-0.2.2-beta.tgz#e17bf0d6abb340650750faa0b1729aa814abd918"
+  integrity sha512-XpoVlS4LgcvmYtXEhNyQPQMRSk8G9n6VlC5G4JtfDVJoPQbWESpR7Cp61LkbEgG9uAoqBB0fYQieaNJgEAHgFg==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"

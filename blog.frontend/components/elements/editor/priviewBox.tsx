@@ -3,27 +3,23 @@ import { useRecoilValue } from 'recoil';
 import { MarkdownView } from '@Elements/markdown';
 import { selectPostState } from '@Recoil/manageState';
 import { isEmpty } from 'lodash';
-import {
-	PriviewBoxContainer,
-	PriviewBoxMarkdownViewBox,
-	PriviewBoxTitle,
-	PriviewBoxTitleBox,
-	PriviewBoxWapper,
-} from '@Styles/elements/elements';
+import { PriviewBoxStyle } from '@Styles/elements/elements';
+
+const { TitleBox, Title, MarkdownViewBox, Container, Wapper } = PriviewBoxStyle;
 
 const PriviewBox: NextPage = () => {
 	const currentPost = useRecoilValue(selectPostState);
 	return (
-		<PriviewBoxContainer>
-			<PriviewBoxWapper>
-				<PriviewBoxTitleBox>
-					<PriviewBoxTitle>
+		<Container>
+			<Wapper>
+				<TitleBox>
+					<Title>
 						{isEmpty(currentPost.currentData.title)
 							? `제목을 입력해 주세요.`
 							: currentPost.currentData.title}
-					</PriviewBoxTitle>
-				</PriviewBoxTitleBox>
-				<PriviewBoxMarkdownViewBox>
+					</Title>
+				</TitleBox>
+				<MarkdownViewBox>
 					<MarkdownView
 						Contents={
 							isEmpty(currentPost.currentData.contents)
@@ -31,9 +27,9 @@ const PriviewBox: NextPage = () => {
 								: currentPost.currentData.contents
 						}
 					/>
-				</PriviewBoxMarkdownViewBox>
-			</PriviewBoxWapper>
-		</PriviewBoxContainer>
+				</MarkdownViewBox>
+			</Wapper>
+		</Container>
 	);
 };
 
