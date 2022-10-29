@@ -1,2 +1,2 @@
 export { default as SplashComponent } from './SplashComponent';
-export { default as UnderConstructionComponent } from './underConstructionComponent';
+export { default as UnderConstructionComponent } from './UnderConstructionComponent';

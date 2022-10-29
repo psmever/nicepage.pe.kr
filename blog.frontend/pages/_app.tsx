@@ -7,7 +7,7 @@ import type { NextComponentType } from 'next';
 import type { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
 import SplashComponent from '@Components/elements/SplashComponent';
-import UnderConstructionComponent from '@Components/elements/underConstructionComponent';
+import UnderConstructionComponent from '@Components/elements/UnderConstructionComponent';
 
 const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = (
 	props: AppLayoutProps
