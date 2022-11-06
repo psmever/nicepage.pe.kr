@@ -61,7 +61,7 @@ const Login: NextLayoutPage = () => {
 				refreshToken: response.payload.refresh_token,
 			});
 
-			await router.push('/welcome');
+			await router.push('/posts');
 		} else {
 			// 에러 처리.
 			Helper.COLORLOG('error', response.message);

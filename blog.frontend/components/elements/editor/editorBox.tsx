@@ -106,7 +106,8 @@ const EditorBox: NextPage<DraftPageProps> = ({ postSave }) => {
 					edit: {
 						...prevState.edit,
 						contents: `${prevState.edit.contents}
-![image](${response.payload.media_url})`,
+![
+image](${response.payload.media_url})`,
 					},
 				}));
 			}
