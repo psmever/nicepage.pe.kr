@@ -11,3 +11,6 @@ export { default as Editor } from './markdown/editor';
 export { default as MarkdownView } from './markdown/markdownView';
 
 export { default as DefaultModal } from './modals/defaultModal';
+
+export { default as MainLayoutHeader } from './layouts/mains/header';
+export { default as MainLayoutFooter } from './layouts/mains/footer';

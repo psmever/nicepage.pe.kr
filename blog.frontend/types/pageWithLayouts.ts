@@ -1,11 +1,15 @@
 import { NextPage } from 'next';
 import type { ReactElement } from 'react';
-import { MainLayout, ManageLayout } from '@Components/layouts';
+import { AuthLayout, MainLayout, ManageLayout } from '@Components/layouts';
 
-export type PageWithMainLayoutType = NextPage & { layout: typeof MainLayout };
+export type PageWithAuthLayoutType = NextPage & { layout: typeof AuthLayout };
 export type PageWithManageLayoutType = NextPage & { layout: typeof ManageLayout };
+export type PageWithMainLayoutType = NextPage & { layout: typeof MainLayout };
 
-export type PageWithLayouts = PageWithMainLayoutType | PageWithManageLayoutType;
+export type PageWithLayouts =
+	| PageWithAuthLayoutType
+	| PageWithManageLayoutType
+	| PageWithMainLayoutType;
 
 export type LayoutProps = ({ children }: { children: ReactElement }) => ReactElement;
 
