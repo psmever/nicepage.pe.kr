@@ -18,6 +18,15 @@ module.exports = removeImports({
 			domains: ['http://media.nicepage.pe.kr'],
 		},
 	},
+	async redirects() {
+		return [
+			{
+				source: '/',
+				destination: '/posts',
+				permanent: true,
+			},
+		];
+	},
 	// exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
 	// 	return {
 	// 		'/': { page: '/' },

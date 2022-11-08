@@ -4,7 +4,7 @@ import { KeyboardEvent, useRef, useState } from 'react';
 import * as authService from '@Services/authService';
 import * as Helper from '@Utils/Helper';
 import { useRouter } from 'next/router';
-import { ManageLayout } from '@Components/layouts';
+import { AuthLayout } from '@Components/layouts';
 import {
 	Container,
 	EmailInput,
@@ -61,7 +61,7 @@ const Login: NextLayoutPage = () => {
 				refreshToken: response.payload.refresh_token,
 			});
 
-			await router.push('/welcome');
+			await router.push('/posts');
 		} else {
 			// 에러 처리.
 			Helper.COLORLOG('error', response.message);
@@ -98,7 +98,7 @@ const Login: NextLayoutPage = () => {
 };
 
 Login.getLayout = (page: ReactElement) => {
-	return <ManageLayout>{page}</ManageLayout>;
+	return <AuthLayout>{page}</AuthLayout>;
 };
 
 export default Login;

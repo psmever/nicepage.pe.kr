@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useRecoilValue } from 'recoil';
-import { MarkdownView } from '@Elements/markdown';
+import { MarkdownView } from '@Elements';
 import { selectPostState } from '@Recoil/manageState';
 import { isEmpty } from 'lodash';
 import { PriviewBoxStyle } from '@Styles/elements/elements';

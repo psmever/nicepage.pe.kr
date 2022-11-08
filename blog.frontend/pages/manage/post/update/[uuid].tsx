@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import React, { useEffect } from 'react';
 import { ManageLayout } from '@Components/layouts';
-import { EditorBox, PriviewBox } from '@Components/elements/editor';
+import { EditorBox, PriviewBox } from '@Elements';
 import { useRouter } from 'next/router';
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import { atomPostState, selectPostState } from '@Recoil/manageState';
