@@ -2,7 +2,7 @@ import { NextLayoutPage } from 'next';
 import type { ReactElement } from 'react';
 import React, { useEffect } from 'react';
 import { ManageLayout } from '@Components/layouts';
-import { EditorBox, PriviewBox } from '@Components/elements/editor';
+import { EditorBox, PriviewBox } from '@Elements';
 import { useRouter } from 'next/router';
 import Const from '@Common/const.json';
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';

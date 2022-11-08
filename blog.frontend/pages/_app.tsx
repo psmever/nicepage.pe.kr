@@ -6,8 +6,7 @@ import React, { ReactNode, useState } from 'react';
 import type { NextComponentType } from 'next';
 import type { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
-import SplashComponent from '@Components/elements/SplashComponent';
-import UnderConstructionComponent from '@Components/elements/UnderConstructionComponent';
+import { SplashComponent, UnderConstructionComponent } from '@Elements';
 
 const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = (
 	props: AppLayoutProps

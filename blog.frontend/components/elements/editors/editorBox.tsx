@@ -2,13 +2,12 @@ import { NextPage } from 'next';
 import React, { useEffect, useRef, useState } from 'react';
 import { isEmpty } from 'lodash';
 import { useWindowResize } from '@Hooks/useWindowResize';
-import { Editor } from '@Elements/markdown';
+import { Editor, EditorActionButton } from '@Elements';
 import TagInput from './tagInput';
 import Const from '@Common/const.json';
 import { imageUpload } from '@Services/postService';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { atomAppToastifyState } from '@Recoil/appToastify';
-import { EditorActionButton } from '@Elements/buttons';
 import { atomPostState, selectPostState } from '@Recoil/manageState';
 import { EditorBoxStyle } from '@Styles/elements/elements';
 

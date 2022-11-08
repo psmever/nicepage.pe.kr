@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import React from 'react';
 import Image from 'next/image';
-import { MarkdownView } from '@Elements/markdown';
+import { MarkdownView } from '@Elements';
 
 const ViewContents = `
 ![image](https://media.nicepage.pe.kr/storage/blog/upload/576da5668bf482d1c1367cdd2e6534af5ef837ae/1d421865-5a1a-4b4c-9b4b-9c4b45661929.png)
