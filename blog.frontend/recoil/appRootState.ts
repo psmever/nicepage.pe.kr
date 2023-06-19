@@ -2,9 +2,21 @@ import { atom, selector } from 'recoil';
 import * as CommonInterface from '@Types/commonInterface';
 
 // app Root
-export const atomAppRootState = atom<{ codes: CommonInterface.CodesInterface }>({
+export const atomAppRootState = atom<{
+	login: boolean;
+	token: {
+		accessToken: string;
+		refreshToken: string;
+	};
+	codes: CommonInterface.CodesInterface;
+}>({
 	key: `app/appRootState`,
 	default: {
+		login: false,
+		token: {
+			accessToken: '',
+			refreshToken: '',
+		},
 		codes: {
 			code_name: [],
 			code_group: {

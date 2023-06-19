@@ -5,7 +5,7 @@ import { useWindowResize } from '@Hooks/useWindowResize';
 import { Editor, EditorActionButton } from '@Elements';
 import TagInput from './tagInput';
 import Const from '@Common/const.json';
-import { imageUpload } from '@Services/postService';
+import { imageUpload } from '@Services/manageService';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { atomAppToastifyState } from '@Recoil/appToastify';
 import { atomPostState, selectPostState } from '@Recoil/manageState';

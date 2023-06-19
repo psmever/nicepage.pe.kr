@@ -66,6 +66,8 @@ class BlogPosts extends Model
         'view_count'
     ];
 
+    protected $with = ['tagMany', 'userOne', 'categoryOne', 'thumbOne'];
+
     /**
      * 슬러그 타이틀.
      * @param String $text
@@ -101,8 +103,23 @@ class BlogPosts extends Model
      * 테그
      * @return HasMany
      */
-    public function tags(): HasMany
+    public function tagMany(): HasMany
     {
         return $this->hasMany(BlogPostsTags::class, 'post_id', 'id');
+    }
+
+    public function userOne()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function categoryOne()
+    {
+        return $this->hasOne(Codes::class, 'code_id', 'id');
+    }
+
+    public function thumbOne()
+    {
+        return $this->hasOne(BlogPostsThumbs::class, 'post_id', 'id');
     }
 }

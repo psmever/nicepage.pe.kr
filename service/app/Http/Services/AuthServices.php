@@ -160,4 +160,22 @@ class AuthServices
             'expires_in' => $taskToken->expires_in
         ];
     }
+
+    /**
+     * 토큰 정보.
+     * @return array
+     * @throws ClientErrorException
+     */
+    public function attemptTokenInfo() : array
+    {
+        $task = Auth::user();
+
+        if(!$task) {
+            throw new ClientErrorException('사용자 정보가 존재 하지 않습니다.');
+        }
+
+        return [
+            'uuid' => $task->uuid,
+        ];
+    }
 }

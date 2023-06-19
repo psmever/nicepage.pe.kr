@@ -24,11 +24,33 @@ export interface CodesInterface {
 }
 
 // 폼 데이터.
-export interface FormData {
+export interface FormDataInterface {
 	append(name: string, value: any, fileName?: string): void;
 
 	set(name: string, value: any, fileName?: string): void;
 }
 
 // post 카테고리.
-export type PostCategory = 'A05010' | 'A05020' | 'A05030' | 'A05040';
+export type PostCategoryType = 'A05010' | 'A05020' | 'A05030' | 'A05040';
+
+// post list item
+export interface PostListItemInterface {
+	id: number;
+	uuid: string;
+	slug_title: string;
+	user: {
+		uuid: string;
+		nicename: string;
+	};
+	thumb: string;
+	title: string;
+	contents: string;
+	created_at: string;
+}
+
+export interface PostListInterface {
+	per_page: 15;
+	current_page: 3;
+	hasmore: false;
+	posts: PostListItemInterface[];
+}

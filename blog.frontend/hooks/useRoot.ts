@@ -61,17 +61,23 @@ export default function useRoot() {
 			const { status, payload } = await SystemService.getSiteBaseData();
 
 			if (status) {
-				setAppRootState({
+				setAppRootState((prevState) => ({
+					...prevState,
 					codes: payload.codes,
-				});
+				}));
 
 				COLORLOG('success', ':: App Init Success :: ');
 				setAppBaseCheckState(true);
 			}
 		};
 
+		const funcCheckLogin = async () => {
+			//
+		};
+
 		if (serverNoticeCheck) {
 			funcGetSiteData().then();
+			funcCheckLogin().then();
 		}
 	}, [serverNoticeCheck, setAppRootState]);
 

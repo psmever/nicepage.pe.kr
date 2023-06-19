@@ -126,8 +126,95 @@ class ShareClass
         $doc = new DOMDocument();
         $doc->loadHTML($contentsText);
         $xpath = new DOMXPath($doc);
-        $src = $xpath->evaluate("string(//image/@src)");
+        return $xpath->evaluate("string(//image/@src)");
+    }
 
-        return $src;
+    /**
+     * 본문에서 리스트용 글자 생성
+     * @param string $str
+     * @param int $n
+     * @param string $end_char
+     * @return string
+     */
+    public static function characterLimiter(string $str, int $n = 500, string $end_char = '&#8230;'): string
+    {
+        $str = preg_replace("/[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]/u", " ", strip_tags(htmlspecialchars_decode($str)));
+
+        if (strlen($str) < $n)
+        {
+            return $str;
+        }
+
+        $str = preg_replace("/\s+/", ' ', str_replace(array("\r\n", "\r", "\n"), ' ', $str));
+
+        if (strlen($str) <= $n)
+        {
+            return $str;
+        }
+
+        $out = "";
+        foreach (explode(' ', trim($str)) as $val)
+        {
+            $out .= $val.' ';
+
+            if (strlen($out) >= $n)
+            {
+                $out = trim($out);
+                return (strlen($out) == strlen($str)) ? $out : $out.$end_char;
+            }
+        }
+    }
+
+    static public function convertTimeToString(string $timestamp = NULL) : string
+    {
+        if(!ctype_digit($timestamp)) {
+            $timestamp = strtotime($timestamp);
+        }
+
+        $diff = time() - $timestamp;
+
+        if($diff == 0) {
+            return '지금';
+        } elseif($diff > 0) {
+
+            $day_diff = floor($diff / 86400);
+
+            if($day_diff == 0) {
+                if($diff < 60) return '조금 전';
+                if($diff < 120) return '1분전';
+                if($diff < 3600) return floor($diff / 60) . '분전';
+                if($diff < 7200) return '1시간 전';
+                if($diff < 86400) return floor($diff / 3600) . '시간 전';
+            }
+
+            if($day_diff == 1) { return '어제'; }
+            if($day_diff < 7) { return $day_diff . '일 전'; }
+            if($day_diff < 31) { return ceil($day_diff / 7) . '주 전'; }
+            if($day_diff < 60) { return '지난 달'; }
+
+            $returnStr = date('F Y', $timestamp);
+
+        } else {
+
+            $diff = abs($diff);
+            $day_diff = floor($diff / 86400);
+
+            if($day_diff == 0) {
+                if($diff < 120) { return '분 안에'; }
+                if($diff < 3600) { return ' ' . floor($diff / 60) . ' 분 안에'; }
+                if($diff < 7200) { return '1시간 안에'; }
+                if($diff < 86400) { return ' ' . floor($diff / 3600) . ' 시간 안에'; }
+            }
+
+            if($day_diff == 1) { return '내일'; }
+            if($day_diff < 4) { return date('l', $timestamp); }
+            if($day_diff < 7 + (7 - date('w'))) { return '다음주'; }
+            if(ceil($day_diff / 7) < 4) { return '' . ceil($day_diff / 7) . '주 안에'; }
+            if(date('n', $timestamp) == date('n') + 1) { return '다음달'; }
+
+            $returnStr = date('F Y', $timestamp);
+        }
+
+        return $returnStr;
     }
 }

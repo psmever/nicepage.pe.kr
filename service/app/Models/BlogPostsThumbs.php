@@ -31,4 +31,13 @@ class BlogPostsThumbs extends Model
         'post_id',
         'media_file_id'
     ];
+
+    protected $with = [
+        'fileOne'
+    ];
+
+    public function fileOne()
+    {
+        return $this->hasOne(MediaFiles::class, 'id', 'media_file_id');
+    }
 }

@@ -8,9 +8,9 @@ import Const from '@Common/const.json';
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
 import { atomPostState } from '@Recoil/manageState';
 import { atomAppToastifyState } from '@Recoil/appToastify';
-import { createPost } from '@Services/postService';
+import { createPost } from '@Services/manageService';
 import { isEmpty } from 'lodash';
-import { PostCategory } from '@Types/commonInterface';
+import { PostCategoryType } from '@Types/commonInterface';
 
 const Create: NextLayoutPage = () => {
 	const router = useRouter();
@@ -55,7 +55,7 @@ const Create: NextLayoutPage = () => {
 
 	// 로딩시 에디터 정보 설정.
 	useEffect(() => {
-		const funcSetEditInfo = (category: PostCategory) => {
+		const funcSetEditInfo = (category: PostCategoryType) => {
 			if (!Const.postCreateCategory.find((e) => e === category)) {
 				return;
 			}
@@ -70,7 +70,7 @@ const Create: NextLayoutPage = () => {
 		const {
 			query: { category },
 		} = router;
-		funcSetEditInfo(category as PostCategory);
+		funcSetEditInfo(category as PostCategoryType);
 	}, [router, setPostData]);
 
 	return (

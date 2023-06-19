@@ -29,7 +29,7 @@ Route::group(['as' => 'api.'], function () {
     Route::group(['prefix' => 'system', 'as' => 'system.'], function () {
         Route::get('check-status', [\App\Http\Controllers\Api\SystemController::class, 'checkSystemStatus'])->name('check.status'); // 서버 체크
         Route::get('check-notice', [\App\Http\Controllers\Api\SystemController::class, 'checkSystemNotice'])->name('check.notice'); // 서버 공지사항 체크
-        Route::get('site-data', [\App\Http\Controllers\Api\SystemController::class, 'getBaseData'])->name('base.data');
+        Route::get('site-data', [\App\Http\Controllers\Api\SystemController::class, 'getBaseData'])->name('base.data'); // 기본 데이터
     });
 
     # v1.
@@ -38,8 +38,9 @@ Route::group(['as' => 'api.'], function () {
         Route::group(['prefix' => 'auth'], function () {
             Route::post('login', [\App\Http\Controllers\Api\v1\AuthController::class, 'login'])->name('login'); # 로그인
             Route::post('logout', [\App\Http\Controllers\Api\v1\AuthController::class, 'logout'])->name('logout')->middleware('auth:api'); # 로그아웃
-            Route::get('login-info', [\App\Http\Controllers\Api\v1\AuthController::class, 'loginInfo'])->name('loginInfo')->middleware('auth:api'); # 토큰 사용자 정보.
+            Route::get('login-info', [\App\Http\Controllers\Api\v1\AuthController::class, 'loginInfo'])->name('login.info')->middleware('auth:api'); # 토큰 사용자 정보.
             Route::post('token-refresh', [\App\Http\Controllers\Api\v1\AuthController::class, 'tokenRefresh'])->name('token.refresh'); # 토큰 새로고침
+            Route::get('token-info', [\App\Http\Controllers\Api\v1\AuthController::class, 'tokenInfo'])->name('token-info')->middleware('auth:api'); # 토큰 사용자 정보.
         });
 
         # media
@@ -47,11 +48,18 @@ Route::group(['as' => 'api.'], function () {
             Route::post('{category}/create-image', [\App\Http\Controllers\Api\v1\MediaController::class, 'createImage'])->name('create.image'); # 이미지 등록
         });
 
-        # post
-        Route::group(['prefix' => 'post'], function () {
-            Route::post('{category}/create', [\App\Http\Controllers\Api\v1\BlogPostController::class, 'create'])->name('create.post')->middleware('auth:api'); # 글 등록
-            Route::put('{uuid}/update', [\App\Http\Controllers\Api\v1\BlogPostController::class, 'update'])->name('update.post')->middleware('auth:api'); # 글 업데이트
-            Route::get('{uuid}/edit', [\App\Http\Controllers\Api\v1\BlogPostController::class, 'edit'])->name('edit.post'); # 글 에디트
+        # manage
+        Route::group(['prefix' => 'manage'], function () {
+            Route::group(['prefix' => 'blog-post'], function () {
+                Route::post('{category}/create', [\App\Http\Controllers\Api\v1\BlogManagePostController::class, 'create'])->name('create.post')->middleware('auth:api'); # 글 등록
+                Route::put('{uuid}/update', [\App\Http\Controllers\Api\v1\BlogManagePostController::class, 'update'])->name('update.post')->middleware('auth:api'); # 글 업데이트
+                Route::get('{uuid}/edit', [\App\Http\Controllers\Api\v1\BlogManagePostController::class, 'edit'])->name('edit.post'); # 글 에디트
+            });
+        });
+
+        # blogs
+        Route::group(['prefix' => 'blog'], function () {
+            Route::get('posts/{pageCount}/{page}', [\App\Http\Controllers\Api\v1\BlogPostController::class, 'index'])->name('posts.index'); # 글 목록
         });
     });
 });

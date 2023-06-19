@@ -83,4 +83,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $with = [
+        'typeOne', 'levelOne'
+    ];
+
+    public function typeOne()
+    {
+        return $this->hasOne(Codes::class, 'code_id', 'type');
+    }
+
+    public function levelOne()
+    {
+        return $this->hasOne(Codes::class, 'code_id', 'level');
+    }
+
+
 }

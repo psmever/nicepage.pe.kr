@@ -9,7 +9,7 @@
 return [
 
     'default' => [
-        'list_paging' => 15,
+        'list_paging_count' => 15,
         'front_code' => '0100010',
         'ios_code' => '0100020',
         'android_code' => '0100030',

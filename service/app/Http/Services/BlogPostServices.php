@@ -59,6 +59,15 @@ class BlogPostServices
         $this->blogPostsThumbsRepository = $blogPostsThumbsRepository;
     }
 
+    private static function gneratorPostListResponse($Posts)
+    {
+        return $Posts->map(function($post) {
+            return [
+                'id' => $post->id
+            ];
+        });
+    }
+
     /**
      * @param $category
      * @return array
@@ -234,6 +243,41 @@ class BlogPostServices
                 return $e['tag'];
             }, $postTask->tags->toarray()),
             'contents' => $postTask->contents,
+        ];
+    }
+
+    public function postList(Int $pageCount, Int $page) : array
+    {
+        $task = $this->blogPostsRepository->postsListbyCategory('A05010', $pageCount, $page);
+
+        return [
+            'per_page' => $task->perPage(),
+            'current_page' => $task->currentPage(),
+            'hasmore' => $task->hasMorePages(),
+            'posts' => $task->map(function($post) {
+
+                $thumb = function($thumbOne) {
+                    if(isset($thumbOne->fileOne) && $thumbOne->fileOne) {
+                        return env('MEDIA_SERVER_URL') . $thumbOne->fileOne->dest_path.'/'.$thumbOne->fileOne->file_name;
+                    } else {
+                        return env("MEDIA_SERVER_URL") . "/assets/blog/img/post_list.png";
+                    }
+                };
+
+                return [
+                    'id' => $post->id,
+                    'uuid' => $post->post_uuid,
+                    'slug_title' => $post->slug_title,
+                    'user' => [
+                        'uuid' => $post->userOne->uuid,
+                        'nicename' => $post->userOne->nickname,
+                    ],
+                    'thumb' => $thumb($post->thumbOne),
+                    'title' => $post->title,
+                    'contents' => ShareClass::characterLimiter($post->contents_html, 200),
+                    'created_at' => ShareClass::convertTimeToString($post->created_at)
+                ];
+            }),
         ];
     }
 }

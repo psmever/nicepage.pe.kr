@@ -111,6 +111,19 @@ export function getLocalToken(): {
 }
 
 /**
+ * return 토큰 정보
+ */
+export function getTokenData(): {
+	accessToken: string;
+	refreshToken: string;
+} {
+	return {
+		accessToken: storageManager.get('accessToken'),
+		refreshToken: storageManager.get('refreshToken'),
+	};
+}
+
+/**
  * return AccessToken.
  */
 export function getAccessToken() {
@@ -138,15 +151,3 @@ export function saveRefreshToken({
 	storageManager.set('accessToken', accessToken);
 	storageManager.set('refreshToken', refreshToken);
 }
-
-/**
- * 이메일 문자열 확인
- * @param emailString
- */
-export const isValidEmail = (emailString: string) => {
-	const emailChack =
-		/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	return emailChack.test(String(emailString).toLowerCase());
-};
-
-export const arrayequality = () => {};

@@ -6,6 +6,7 @@ import React, { ReactNode, useState } from 'react';
 import type { NextComponentType } from 'next';
 import type { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
+import { RecoilDevTools } from 'recoil-gear';
 import { SplashComponent, UnderConstructionComponent } from '@Elements';
 
 const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = (
@@ -31,6 +32,7 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = (
 
 	return (
 		<RecoilRoot>
+			<RecoilDevTools />
 			{(function () {
 				if (serverFail) {
 					return <UnderConstructionComponent />;

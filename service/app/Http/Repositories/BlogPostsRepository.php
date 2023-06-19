@@ -52,6 +52,16 @@ class BlogPostsRepository extends BaseRepository implements BlogPostRepositoryIn
      */
     public function editbyUUID(String $uuid) : ?Model
     {
-        return $this->model::with(['tags'])->where('post_uuid', $uuid)->firstOrFail();
+        return $this->model::with(['tagMany'])->where('post_uuid', $uuid)->firstOrFail();
+    }
+
+    public function postsListbyCategory(string $category = 'A05010', Int $PAGEING_COUNT = 0, Int $page)
+    {
+        return $this->model::where('category', $category)
+            ->where([['post_active', 'Y'], ['post_publish', 'Y']])
+            ->with(['userOne.typeOne', 'userOne.levelOne', 'thumbOne.fileOne', 'tagMany'])
+            ->orderBy('updated_at', 'Desc')
+            ->orderBy('id', 'Desc')
+            ->simplePaginate($PAGEING_COUNT, ['*'], 'page', $page);
     }
 }

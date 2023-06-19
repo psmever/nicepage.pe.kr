@@ -61,4 +61,9 @@ class AuthController extends Controller
     {
         return Response::success($this->authServices->attemptTokenRefresh());
     }
+
+    public function tokenInfo(): mixed
+    {
+        return Response::success($this->authServices->attemptTokenInfo());
+    }
 }

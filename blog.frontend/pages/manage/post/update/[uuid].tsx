@@ -7,8 +7,8 @@ import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import { atomPostState, selectPostState } from '@Recoil/manageState';
 import { atomAppToastifyState } from '@Recoil/appToastify';
 import Const from '@Common/const.json';
-import { editPost, updatePost } from '@Services/postService';
-import { PostCategory } from '@Types/commonInterface';
+import { editPost, updatePost } from '@Services/manageService';
+import { PostCategoryType } from '@Types/commonInterface';
 import { isEmpty } from 'lodash';
 
 const Update: any = ({
@@ -16,7 +16,7 @@ const Update: any = ({
 }: {
 	postData: {
 		title: string;
-		category: PostCategory;
+		category: PostCategoryType;
 		tags: string[];
 		contents: string;
 	};
